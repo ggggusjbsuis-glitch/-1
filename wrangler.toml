@@ -1,0 +1,10 @@
+name = "schedule-viewer"
+compatibility_date = "2024-01-01"
+
+[[kv_namespaces]]
+binding = "SCHEDULE_KV"
+id = "PLACEHOLDER"  # 创建 KV 后替换为真实 ID
+preview_id = "PLACEHOLDER"
+
+[vars]
+ADMIN_PASSWORD = "admin123"
