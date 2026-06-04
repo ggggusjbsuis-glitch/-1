@@ -1,0 +1,24 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "item",
+  "main": "src/worker.ts",
+  "compatibility_date": "2026-06-04",
+  "observability": {
+    "enabled": true
+  },
+  "assets": {
+    "not_found_handling": "single-page-application"
+  },
+  "compatibility_flags": [
+    "nodejs_compat"
+  ],
+  "kv_namespaces": [
+    {
+      "binding": "SCHEDULE_KV",
+      "id": "PLACEHOLDER"
+    }
+  ],
+  "vars": {
+    "ADMIN_PASSWORD": "admin123"
+  }
+}
