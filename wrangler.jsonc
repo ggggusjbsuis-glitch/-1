@@ -20,7 +20,8 @@
     }
   ],
   "vars": {
-    "ADMIN_PASSWORD": "admin123"
+    "ADMIN_PASSWORD": "admin123",
+    "MAIL_FROM": "noreply@xdjyk.online"
   },
   "triggers": {
     "crons": ["*/5 * * * *"]

@@ -115,6 +115,44 @@ async function fetchKeysFromRemote(env) {
   }
 }
 
+// ====== 邮件发送（MailChannels） ======
+async function sendEmail(env, to, subject, body) {
+  const from = env.MAIL_FROM || 'noreply@xdjyk.online';
+  try {
+    const res = await fetch('https://api.mailchannels.net/tx/v1/send', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        personalizations: [{ to: [{ email: to }] }],
+        from: { email: from, name: '现代教育科' },
+        subject,
+        content: [{ type: 'text/plain', value: body }],
+      }),
+    });
+    if (res.ok) console.log(`[邮件] 已发送至 ${to}`);
+    else console.error(`[邮件] 发送失败 ${res.status}:`, await res.text());
+  } catch (e) {
+    console.error('[邮件] 异常:', e.message);
+  }
+}
+
+async function sendEventEmails(env, hallData, staffList) {
+  const sent = new Set();
+  for (const [date, events] of Object.entries(hallData || {})) {
+    for (const evt of events) {
+      if (evt.status !== 'occupied' || !evt.contactPerson) continue;
+      const staff = staffList.find((s) => s.name === evt.contactPerson);
+      if (!staff || !staff.email) continue;
+      if (sent.has(staff.email + evt.id)) continue;
+      sent.add(staff.email + evt.id);
+      await sendEmail(env, staff.email,
+        `【报告厅】活动安排通知 - ${evt.eventName}`,
+        `活动名称：${evt.eventName}\n时间：${date} ${evt.timeSlot}\n地点：报告厅\n负责人：${evt.contactPerson} ${evt.contactPhone || ''}\n主办单位：${evt.organizer || '无'}\n\n此邮件由系统自动发送，请勿回复。`
+      );
+    }
+  }
+}
+
 // ====== 主 Worker ======
 export default {
   async fetch(request, env) {
@@ -133,7 +171,8 @@ export default {
       if (method === 'PUT') {
         const body = await request.json();
         if (!checkPassword(env, body)) return Response.json({ error: '密码错误' }, { status: 403 });
-        await kvPut(env, 'staff', body.data || body);
+        const staffData = body.data !== undefined ? body.data : body;
+        await kvPut(env, 'staff', staffData);
         return Response.json({ ok: true });
       }
     }
@@ -156,7 +195,11 @@ export default {
       if (method === 'PUT') {
         const body = await request.json();
         if (!checkPassword(env, body)) return Response.json({ error: '密码错误' }, { status: 403 });
-        await kvPut(env, 'hall', body.data || body);
+        const hallData = body.data !== undefined ? body.data : body;
+        await kvPut(env, 'hall', hallData);
+        // 发送邮件通知
+        const staffList = await kvGet(env, 'staff', DEFAULTS.staff);
+        sendEventEmails(env, hallData, staffList);
         return Response.json({ ok: true });
       }
     }
