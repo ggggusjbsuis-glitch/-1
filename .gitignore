@@ -4,5 +4,4 @@ dist-ssr
 *.local
 .env
 .wrangler
-.env
 server/config.json
