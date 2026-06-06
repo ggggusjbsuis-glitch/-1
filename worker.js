@@ -115,18 +115,22 @@ async function fetchKeysFromRemote(env) {
   }
 }
 
-// ====== 邮件发送（MailChannels） ======
+// ====== 邮件发送（Resend） ======
 async function sendEmail(env, to, subject, body) {
-  const from = env.MAIL_FROM || 'noreply@xdjyk.online';
+  const apiKey = env.RESEND_API_KEY;
+  if (!apiKey) { console.error('[邮件] 未配置 RESEND_API_KEY'); return; }
   try {
-    const res = await fetch('https://api.mailchannels.net/tx/v1/send', {
+    const res = await fetch('https://api.resend.com/emails', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: {
+        'Authorization': `Bearer ${apiKey}`,
+        'Content-Type': 'application/json',
+      },
       body: JSON.stringify({
-        personalizations: [{ to: [{ email: to }] }],
-        from: { email: from, name: '现代教育科' },
+        from: '现代教育科 <liulong@zmuzh.edu.cn>',
+        to: [to],
         subject,
-        content: [{ type: 'text/plain', value: body }],
+        text: body,
       }),
     });
     if (res.ok) console.log(`[邮件] 已发送至 ${to}`);
