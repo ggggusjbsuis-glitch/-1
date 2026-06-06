@@ -1,0 +1,86 @@
+{
+  "2026-06-05": [
+    {
+      "id": "a",
+      "date": "2026-06-05",
+      "timeSlot": "08:00-10:00",
+      "eventName": "",
+      "organizer": "",
+      "contactPerson": "",
+      "contactPhone": "",
+      "status": "free"
+    },
+    {
+      "id": "b",
+      "date": "2026-06-05",
+      "timeSlot": "10:00-12:00",
+      "eventName": "",
+      "organizer": "",
+      "contactPerson": "",
+      "contactPhone": "",
+      "status": "free"
+    },
+    {
+      "id": "c",
+      "date": "2026-06-05",
+      "timeSlot": "14:00-16:00",
+      "eventName": "",
+      "organizer": "",
+      "contactPerson": "",
+      "contactPhone": "",
+      "status": "free"
+    }
+  ],
+  "2026-06-02": [
+    {
+      "id": "mq1w9lp6l6eu",
+      "date": "2026-06-02",
+      "timeSlot": "08:00-10:00",
+      "eventName": "",
+      "organizer": "",
+      "contactPerson": "",
+      "contactPhone": "",
+      "status": "free"
+    },
+    {
+      "id": "mq1w9lp6al0g",
+      "date": "2026-06-02",
+      "timeSlot": "10:00-12:00",
+      "eventName": "",
+      "organizer": "",
+      "contactPerson": "",
+      "contactPhone": "",
+      "status": "free"
+    },
+    {
+      "id": "mq1w9lp6cqj3",
+      "date": "2026-06-02",
+      "timeSlot": "14:00-16:00",
+      "eventName": "",
+      "organizer": "",
+      "contactPerson": "",
+      "contactPhone": "",
+      "status": "free"
+    },
+    {
+      "id": "mq1w9lp67eiv",
+      "date": "2026-06-02",
+      "timeSlot": "16:00-18:00",
+      "eventName": "",
+      "organizer": "",
+      "contactPerson": "",
+      "contactPhone": "",
+      "status": "free"
+    },
+    {
+      "id": "mq1w9lp6ig85",
+      "date": "2026-06-02",
+      "timeSlot": "08:00-10:00",
+      "eventName": "",
+      "organizer": "",
+      "contactPerson": "",
+      "contactPhone": "",
+      "status": "free"
+    }
+  ]
+}

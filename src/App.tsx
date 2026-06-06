@@ -1,72 +1,91 @@
-import { useState } from 'react';
-import { useSchedule } from './hooks/useSchedule';
-import type { Schedule } from './types';
-import ScheduleView from './components/ScheduleView';
-import ScheduleEdit from './components/ScheduleEdit';
+import { useState, useEffect } from 'react';
+import Sidebar from './components/Sidebar';
+import StaffPage from './components/StaffPage';
+import ClassroomPage from './components/ClassroomPage';
+import KeyPage from './components/KeyPage';
+import HallPage from './components/HallPage';
 import AdminGate from './components/AdminGate';
+import SettingsModal from './components/SettingsModal';
+import { mockStaff, mockKeyData, mockHallEvents } from './data/mock';
+import type { TabId, Staff, KeyData, HallEvent } from './types';
+
+async function api<T>(method: string, url: string, body?: unknown): Promise<T | null> {
+  try {
+    const opts: RequestInit = { method, headers: body ? { 'Content-Type': 'application/json' } : undefined, body: body ? JSON.stringify(body) : undefined };
+    const res = await fetch(url, opts);
+    if (res.ok) return res.json();
+  } catch {}
+  return null;
+}
 
 export default function App() {
-  const { schedule, loading, error, reload } = useSchedule();
-  const [mode, setMode] = useState<'view' | 'edit'>('view');
+  const [activeTab, setActiveTab] = useState<TabId>('staff');
+  const [staff, setStaff] = useState<Staff[]>(mockStaff);
+  const [keyData, setKeyData] = useState<KeyData | null>(mockKeyData);
+  const [hallEvents, setHallEvents] = useState<Record<string, HallEvent[]>>(mockHallEvents);
+  const [isEditing, setIsEditing] = useState(false);
   const [showGate, setShowGate] = useState(false);
-  const [password, setPassword] = useState('');
+  const [showSettings, setShowSettings] = useState(false);
 
-  if (loading) {
-    return (
-      <div className="min-h-screen flex items-center justify-center bg-gray-50">
-        <div className="text-gray-400 text-sm">加载中...</div>
-      </div>
-    );
-  }
+  useEffect(() => {
+    (async () => {
+      const s = await api<Staff[]>('GET', '/api/staff'); if (s) setStaff(s);
+      const h = await api<Record<string, HallEvent[]>>('GET', '/api/hall'); if (h) setHallEvents(h);
+    })();
+  }, []);
 
-  if (error) {
-    return (
-      <div className="min-h-screen flex flex-col items-center justify-center bg-gray-50 gap-3">
-        <div className="text-red-500 text-sm">加载失败: {error}</div>
-        <button
-          onClick={() => window.location.reload()}
-          className="text-sm text-blue-500 underline"
-        >
-          重试
-        </button>
-      </div>
-    );
-  }
+  useEffect(() => {
+    const load = async () => { const d = await api<KeyData>('GET', '/api/keys'); if (d) setKeyData(d); };
+    load();
+    const t = setInterval(load, 30000);
+    return () => clearInterval(t);
+  }, []);
 
-  if (!schedule) return null;
+  const saveStaff = async (list: Staff[]) => { setStaff(list); await api('PUT', '/api/staff', { password: 'admin123', data: list }); };
+  const saveHall = async (data: Record<string, HallEvent[]>) => { setHallEvents(data); await api('PUT', '/api/hall', { password: 'admin123', data }); };
 
-  const handleUnlock = (pw: string) => {
-    setPassword(pw);
-    setShowGate(false);
-    setMode('edit');
-  };
-
-  const handleSaved = (_saved: Schedule) => {
-    reload();
-  };
-
-  const handleExitEdit = () => {
-    setMode('view');
-    setPassword('');
-  };
+  const [timeStr, setTimeStr] = useState('');
+  useEffect(() => {
+    const tick = () => { const n = new Date(); setTimeStr(`${String(n.getMonth() + 1).padStart(2, '0')}/${String(n.getDate()).padStart(2, '0')} ${String(n.getHours()).padStart(2, '0')}:${String(n.getMinutes()).padStart(2, '0')}`); };
+    tick(); const t = setInterval(tick, 10000); return () => clearInterval(t);
+  }, []);
 
   return (
-    <div className="min-h-screen bg-gray-50 pb-8">
-      {mode === 'view' ? (
-        <ScheduleView
-          schedule={schedule}
-          onLongPressTitle={() => setShowGate(true)}
-        />
-      ) : (
-        <ScheduleEdit
-          schedule={schedule}
-          password={password}
-          onExit={handleExitEdit}
-          onSaved={handleSaved}
-        />
-      )}
+    <div className="min-h-screen bg-[#f4f7fc]">
+      <header className="bg-white border-b border-gray-200 h-[60px] flex items-center justify-between px-6 sticky top-0 z-50 shadow-[0_1px_2px_rgba(0,0,0,.04)]">
+        <div className="flex items-center gap-3.5">
+          <div className="w-[38px] h-[38px] rounded-[10px] bg-gradient-to-br from-blue-600 to-blue-400 flex items-center justify-center text-lg shadow-[0_2px_8px_rgba(37,99,235,.25)]">⚡</div>
+          <h1 className="text-[17px] font-bold text-gray-900 tracking-[-.2px]">
+            现代教育科教育管理系统
+            <span className="text-[10px] text-gray-400 font-normal ml-1.5 bg-gray-100 py-0.5 px-2 rounded-md">v1.0</span>
+          </h1>
+        </div>
+        <div className="flex items-center gap-4">
+          <span className="text-[13px] text-gray-400 font-medium">{timeStr}</span>
+          {isEditing ? (
+            <div className="flex items-center gap-2">
+              <span className="text-[11px] bg-orange-50 text-orange-600 px-2 py-1 rounded-md font-semibold">编辑模式</span>
+              <button onClick={() => setShowSettings(true)} className="bg-gray-100 text-gray-600 px-3 py-2 rounded-[10px] text-[13px] font-medium hover:bg-gray-200 transition-all">⚙ 设置</button>
+              <button onClick={() => setIsEditing(false)} className="bg-gray-100 text-gray-600 px-4 py-2 rounded-[10px] text-[13px] font-semibold hover:bg-gray-200 transition-all">退出</button>
+            </div>
+          ) : (
+            <button onClick={() => setShowGate(true)} className="bg-blue-600 text-white px-5.5 py-2.5 rounded-[10px] text-[13px] font-semibold hover:bg-blue-700 shadow-[0_2px_6px_rgba(37,99,235,.25)] transition-all">登录管理</button>
+          )}
+        </div>
+      </header>
 
-      {showGate && <AdminGate onUnlock={handleUnlock} />}
+      <div className="flex flex-col md:flex-row">
+        <Sidebar active={activeTab} onChange={setActiveTab} />
+        <main className="flex-1 p-6 max-w-[1100px] min-w-0">
+          {activeTab === 'staff' && <StaffPage data={staff} editing={isEditing} onSave={saveStaff} />}
+          {activeTab === 'classroom' && <ClassroomPage keyData={keyData} />}
+          {activeTab === 'keys' && <KeyPage data={keyData} />}
+          {activeTab === 'hall' && <HallPage eventsByDate={hallEvents} editing={isEditing} onSave={saveHall} staffList={staff} />}
+        </main>
+      </div>
+
+      {showGate && <AdminGate onUnlock={() => { setShowGate(false); setIsEditing(true); }} onClose={() => setShowGate(false)} />}
+      {showSettings && <SettingsModal onClose={() => setShowSettings(false)} />}
     </div>
   );
 }

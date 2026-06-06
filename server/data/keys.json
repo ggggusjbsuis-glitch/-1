@@ -1,0 +1,540 @@
+{
+  "fetchedAt": "2026-06-06T12:20:09.299Z",
+  "keys": {
+    "total": 31,
+    "putIn": 30,
+    "takeOut": 1,
+    "error": 0,
+    "list": [
+      {
+        "id": "2790760566",
+        "name": "综3403",
+        "location": "未存入",
+        "department": "遵义医科大学珠海校区",
+        "status": "取出",
+        "keyType": "长期"
+      },
+      {
+        "id": "2785988038",
+        "name": "报3101",
+        "location": "综合楼10-01通道",
+        "department": "遵义医科大学珠海校区",
+        "status": "存入",
+        "keyType": "长期"
+      },
+      {
+        "id": "2789303030",
+        "name": "综3104",
+        "location": "综合楼10-02通道",
+        "department": "遵义医科大学珠海校区",
+        "status": "存入",
+        "keyType": "长期"
+      },
+      {
+        "id": "2790011558",
+        "name": "综3105",
+        "location": "综合楼10-03通道",
+        "department": "遵义医科大学珠海校区",
+        "status": "存入",
+        "keyType": "长期"
+      },
+      {
+        "id": "2790262182",
+        "name": "综3106",
+        "location": "综合楼10-04通道",
+        "department": "遵义医科大学珠海校区",
+        "status": "存入",
+        "keyType": "长期"
+      },
+      {
+        "id": "2785943382",
+        "name": "综3107",
+        "location": "综合楼10-05通道",
+        "department": "遵义医科大学珠海校区",
+        "status": "存入",
+        "keyType": "长期"
+      },
+      {
+        "id": "2786022422",
+        "name": "综3201",
+        "location": "综合楼10-06通道",
+        "department": "遵义医科大学珠海校区",
+        "status": "存入",
+        "keyType": "长期"
+      },
+      {
+        "id": "2785980262",
+        "name": "综3202",
+        "location": "综合楼10-07通道",
+        "department": "遵义医科大学珠海校区",
+        "status": "存入",
+        "keyType": "长期"
+      },
+      {
+        "id": "2788578886",
+        "name": "综3203",
+        "location": "综合楼10-08通道",
+        "department": "遵义医科大学珠海校区",
+        "status": "存入",
+        "keyType": "长期"
+      },
+      {
+        "id": "2786325670",
+        "name": "综3204",
+        "location": "综合楼10-09通道",
+        "department": "遵义医科大学珠海校区",
+        "status": "存入",
+        "keyType": "长期"
+      },
+      {
+        "id": "2789026582",
+        "name": "综3205",
+        "location": "综合楼10-10通道",
+        "department": "遵义医科大学珠海校区",
+        "status": "存入",
+        "keyType": "长期"
+      },
+      {
+        "id": "1497920762",
+        "name": "豫A001",
+        "location": "综合楼20-01通道",
+        "department": "遵义医科大学珠海校区",
+        "status": "存入",
+        "keyType": "长期"
+      },
+      {
+        "id": "2789882038",
+        "name": "综3301",
+        "location": "综合楼20-02通道",
+        "department": "遵义医科大学珠海校区",
+        "status": "存入",
+        "keyType": "长期"
+      },
+      {
+        "id": "2789389878",
+        "name": "综3302",
+        "location": "综合楼20-03通道",
+        "department": "遵义医科大学珠海校区",
+        "status": "存入",
+        "keyType": "长期"
+      },
+      {
+        "id": "2786163430",
+        "name": "综3401",
+        "location": "综合楼20-04通道",
+        "department": "遵义医科大学珠海校区",
+        "status": "存入",
+        "keyType": "长期"
+      },
+      {
+        "id": "2789886294",
+        "name": "综3402",
+        "location": "综合楼20-05通道",
+        "department": "遵义医科大学珠海校区",
+        "status": "存入",
+        "keyType": "长期"
+      },
+      {
+        "id": "2788631430",
+        "name": "综3206",
+        "location": "综合楼20-06通道",
+        "department": "遵义医科大学珠海校区",
+        "status": "存入",
+        "keyType": "长期"
+      },
+      {
+        "id": "2786312038",
+        "name": "综3404",
+        "location": "综合楼20-07通道",
+        "department": "遵义医科大学珠海校区",
+        "status": "存入",
+        "keyType": "长期"
+      },
+      {
+        "id": "2788626102",
+        "name": "综3405",
+        "location": "综合楼20-08通道",
+        "department": "遵义医科大学珠海校区",
+        "status": "存入",
+        "keyType": "长期"
+      },
+      {
+        "id": "2789510646",
+        "name": "综3506",
+        "location": "综合楼20-09通道",
+        "department": "遵义医科大学珠海校区",
+        "status": "存入",
+        "keyType": "长期"
+      },
+      {
+        "id": "2790665574",
+        "name": "综3502",
+        "location": "综合楼20-10通道",
+        "department": "遵义医科大学珠海校区",
+        "status": "存入",
+        "keyType": "长期"
+      },
+      {
+        "id": "2787597526",
+        "name": "综3403",
+        "location": "综合楼20-11通道",
+        "department": "遵义医科大学珠海校区",
+        "status": "存入",
+        "keyType": "长期"
+      },
+      {
+        "id": "2790475206",
+        "name": "综3504",
+        "location": "综合楼20-12通道",
+        "department": "遵义医科大学珠海校区",
+        "status": "存入",
+        "keyType": "长期"
+      },
+      {
+        "id": "2786862214",
+        "name": "综3505",
+        "location": "综合楼20-13通道",
+        "department": "遵义医科大学珠海校区",
+        "status": "存入",
+        "keyType": "长期"
+      },
+      {
+        "id": "2786424966",
+        "name": "综3406",
+        "location": "综合楼20-14通道",
+        "department": "遵义医科大学珠海校区",
+        "status": "存入",
+        "keyType": "长期"
+      },
+      {
+        "id": "2789097894",
+        "name": "综3602",
+        "location": "综合楼20-15通道",
+        "department": "遵义医科大学珠海校区",
+        "status": "存入",
+        "keyType": "长期"
+      },
+      {
+        "id": "2788725286",
+        "name": "综3603",
+        "location": "综合楼20-16通道",
+        "department": "遵义医科大学珠海校区",
+        "status": "存入",
+        "keyType": "长期"
+      },
+      {
+        "id": "2786664854",
+        "name": "综3604",
+        "location": "综合楼20-17通道",
+        "department": "遵义医科大学珠海校区",
+        "status": "存入",
+        "keyType": "长期"
+      },
+      {
+        "id": "1497515466",
+        "name": "综3503",
+        "location": "综合楼20-18通道",
+        "department": "遵义医科大学珠海校区",
+        "status": "存入",
+        "keyType": "长期"
+      },
+      {
+        "id": "2786365990",
+        "name": "综3607",
+        "location": "综合楼20-19通道",
+        "department": "遵义医科大学珠海校区",
+        "status": "存入",
+        "keyType": "长期"
+      },
+      {
+        "id": "2786606534",
+        "name": "综3606",
+        "location": "综合楼20-20通道",
+        "department": "遵义医科大学珠海校区",
+        "status": "存入",
+        "keyType": "长期"
+      }
+    ]
+  },
+  "todayRecords": [
+    {
+      "id": "4a6cadda-9210-49cb-aab5-8ed3caed9849",
+      "userName": "赵桂敏护理六班",
+      "action": "归还",
+      "keyName": "综3202",
+      "location": "综合楼10-07通道",
+      "time": "2026-06-06 19:11:17",
+      "remark": "授权归还"
+    },
+    {
+      "id": "280f016a-eceb-483f-b454-53f8f37956c8",
+      "userName": "23级临床13班黄银银",
+      "action": "归还",
+      "keyName": "综3502",
+      "location": "综合楼20-10通道",
+      "time": "2026-06-06 18:41:46",
+      "remark": "授权归还"
+    },
+    {
+      "id": "d7f3feac-446c-4f0e-ae9e-54dd20fa2bcf",
+      "userName": "2025级口腔医学2班孟月源",
+      "action": "归还",
+      "keyName": "报3101",
+      "location": "综合楼10-01通道",
+      "time": "2026-06-06 18:36:32",
+      "remark": "授权归还"
+    },
+    {
+      "id": "ce222bcd-a10a-4f81-b255-e29df2ef421d",
+      "userName": "2025级口腔医学2班孟月源",
+      "action": "取出",
+      "keyName": "报3101",
+      "location": "综合楼10-01通道",
+      "time": "2026-06-06 18:34:11",
+      "remark": "授权取出"
+    },
+    {
+      "id": "8dd2757f-3df9-4710-b71d-175781b2fd7b",
+      "userName": "2025级口腔医学2班孟月源",
+      "action": "归还",
+      "keyName": "综3106",
+      "location": "综合楼10-04通道",
+      "time": "2026-06-06 18:33:32",
+      "remark": "授权归还"
+    },
+    {
+      "id": "f98495d7-fcbe-432b-a420-22365429dac1",
+      "userName": "2025级口腔医学2班孟月源",
+      "action": "归还",
+      "keyName": "综3107",
+      "location": "综合楼10-05通道",
+      "time": "2026-06-06 18:33:27",
+      "remark": "授权归还"
+    },
+    {
+      "id": "8bea995f-2aaf-49be-b92f-d97f0aebc428",
+      "userName": "24级护理6班杨向东",
+      "action": "归还",
+      "keyName": "综3201",
+      "location": "综合楼10-06通道",
+      "time": "2026-06-06 18:29:55",
+      "remark": "授权归还"
+    },
+    {
+      "id": "99220cc8-0e0c-48eb-a9e2-a0d121f55eea",
+      "userName": "24级护理6班杨向东",
+      "action": "取出",
+      "keyName": "综3201",
+      "location": "综合楼10-06通道",
+      "time": "2026-06-06 18:22:47",
+      "remark": "授权取出"
+    },
+    {
+      "id": "0b33d384-d1c5-4f4b-883f-f0f548a0c98a",
+      "userName": "2025级口腔医学2班孟月源",
+      "action": "取出",
+      "keyName": "综3107",
+      "location": "综合楼10-05通道",
+      "time": "2026-06-06 18:22:33",
+      "remark": "授权取出"
+    },
+    {
+      "id": "9c609673-91a0-47ca-bbbb-d2232fdd9772",
+      "userName": "2025级口腔医学2班孟月源",
+      "action": "取出",
+      "keyName": "综3106",
+      "location": "综合楼10-04通道",
+      "time": "2026-06-06 18:22:32",
+      "remark": "授权取出"
+    },
+    {
+      "id": "7f3dcbb8-bd62-428f-b302-df1eb03afda0",
+      "userName": "23级临床13班黄银银",
+      "action": "取出",
+      "keyName": "综3502",
+      "location": "综合楼20-10通道",
+      "time": "2026-06-06 18:09:37",
+      "remark": "授权取出"
+    },
+    {
+      "id": "26404081-cd73-4a28-bfc6-4aa3d7fc5df6",
+      "userName": "24级临床12班刘时清钦",
+      "action": "归还",
+      "keyName": "综3205",
+      "location": "综合楼10-10通道",
+      "time": "2026-06-06 17:52:09",
+      "remark": "授权归还"
+    },
+    {
+      "id": "8b8716d6-d405-40ec-946f-79cfd9d8cf3d",
+      "userName": "24级临床12班刘时清钦",
+      "action": "归还",
+      "keyName": "综3206",
+      "location": "综合楼20-06通道",
+      "time": "2026-06-06 17:52:00",
+      "remark": "授权归还"
+    },
+    {
+      "id": "f678e879-b618-47ec-a3fb-3b18a58019bc",
+      "userName": "24级护理5班温诗语",
+      "action": "归还",
+      "keyName": "综3405",
+      "location": "综合楼20-08通道",
+      "time": "2026-06-06 17:43:55",
+      "remark": "授权归还"
+    },
+    {
+      "id": "09192cac-2a85-4fc5-85b5-7af6f6fc8f91",
+      "userName": "24级临床12班刘时清钦",
+      "action": "取出",
+      "keyName": "综3206",
+      "location": "综合楼20-06通道",
+      "time": "2026-06-06 17:32:51",
+      "remark": "授权取出"
+    },
+    {
+      "id": "fff7f9ba-437f-477b-a8c6-2459dbca6ae3",
+      "userName": "24级临床12班刘时清钦",
+      "action": "取出",
+      "keyName": "综3205",
+      "location": "综合楼10-10通道",
+      "time": "2026-06-06 17:32:35",
+      "remark": "授权取出"
+    },
+    {
+      "id": "5822c4d6-5e50-493d-aac5-0840ed790835",
+      "userName": "赵桂敏护理六班",
+      "action": "取出",
+      "keyName": "综3202",
+      "location": "综合楼10-07通道",
+      "time": "2026-06-06 17:22:08",
+      "remark": "授权取出"
+    },
+    {
+      "id": "54161bb9-49f1-417d-b03d-8d13f571905e",
+      "userName": "23级临床13班严浩城",
+      "action": "归还",
+      "keyName": "综3204",
+      "location": "综合楼10-09通道",
+      "time": "2026-06-06 16:32:53",
+      "remark": "授权归还"
+    },
+    {
+      "id": "2c969b61-8efa-474a-905c-447e80492638",
+      "userName": "23级临床13班严浩城",
+      "action": "归还",
+      "keyName": "综3203",
+      "location": "综合楼10-08通道",
+      "time": "2026-06-06 16:32:51",
+      "remark": "授权归还"
+    },
+    {
+      "id": "5b5ba49f-c370-4ff8-a4b3-2aa038fdfc93",
+      "userName": "23级临床13班严浩城",
+      "action": "取出",
+      "keyName": "综3203",
+      "location": "综合楼10-08通道",
+      "time": "2026-06-06 16:15:16",
+      "remark": "授权取出"
+    },
+    {
+      "id": "30a7ceda-6ff6-4fe5-8d4e-bf5d945efe57",
+      "userName": "23级临床13班严浩城",
+      "action": "取出",
+      "keyName": "综3204",
+      "location": "综合楼10-09通道",
+      "time": "2026-06-06 16:15:15",
+      "remark": "授权取出"
+    },
+    {
+      "id": "e7737377-7948-4481-b0a2-6a82235e736d",
+      "userName": "24级护理5班温诗语",
+      "action": "取出",
+      "keyName": "综3405",
+      "location": "综合楼20-08通道",
+      "time": "2026-06-06 16:03:12",
+      "remark": "授权取出"
+    },
+    {
+      "id": "e18614dc-3152-4423-966e-561b5178e214",
+      "userName": "25级李璐医学影像学1班",
+      "action": "归还",
+      "keyName": "综3205",
+      "location": "综合楼10-10通道",
+      "time": "2026-06-06 13:33:20",
+      "remark": "授权归还"
+    },
+    {
+      "id": "efaff8d0-f07c-4e80-8587-f10c50cc80fe",
+      "userName": "25级李璐医学影像学1班",
+      "action": "归还",
+      "keyName": "综3105",
+      "location": "综合楼10-03通道",
+      "time": "2026-06-06 13:33:08",
+      "remark": "授权归还"
+    },
+    {
+      "id": "707e4b1b-fb39-49d6-b8e1-2a9c53cfa691",
+      "userName": "25级李璐医学影像学1班",
+      "action": "归还",
+      "keyName": "综3104",
+      "location": "综合楼10-02通道",
+      "time": "2026-06-06 13:33:04",
+      "remark": "授权归还"
+    },
+    {
+      "id": "86096e34-f9da-4121-8afd-98786fe1c532",
+      "userName": "25级李璐医学影像学1班",
+      "action": "取出",
+      "keyName": "综3105",
+      "location": "综合楼10-03通道",
+      "time": "2026-06-06 13:17:00",
+      "remark": "授权取出"
+    },
+    {
+      "id": "dc0b667c-9abf-49e7-9b53-06ba3ce74413",
+      "userName": "25级李璐医学影像学1班",
+      "action": "取出",
+      "keyName": "综3104",
+      "location": "综合楼10-02通道",
+      "time": "2026-06-06 13:16:53",
+      "remark": "授权取出"
+    },
+    {
+      "id": "899cdb5f-b801-419f-af30-9fc10fdcde99",
+      "userName": "23级临床9班杨云轩",
+      "action": "归还",
+      "keyName": "综3504",
+      "location": "综合楼20-12通道",
+      "time": "2026-06-06 12:49:57",
+      "remark": "授权归还"
+    },
+    {
+      "id": "cb053f30-c92d-4a77-882a-52bf11f5dfc4",
+      "userName": "23级临床9班杨云轩",
+      "action": "归还",
+      "keyName": "综3503",
+      "location": "综合楼20-18通道",
+      "time": "2026-06-06 12:49:56",
+      "remark": "授权归还"
+    },
+    {
+      "id": "b08e8e1a-e5c8-4eee-877b-97886029882a",
+      "userName": "23级临床9班杨云轩",
+      "action": "取出",
+      "keyName": "综3504",
+      "location": "综合楼20-12通道",
+      "time": "2026-06-06 12:37:45",
+      "remark": "授权取出"
+    },
+    {
+      "id": "6e80f699-de3f-4f42-aa32-d854b6481135",
+      "userName": "23级临床9班杨云轩",
+      "action": "取出",
+      "keyName": "综3503",
+      "location": "综合楼20-18通道",
+      "time": "2026-06-06 12:37:44",
+      "remark": "授权取出"
+    }
+  ]
+}

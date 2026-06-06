@@ -1,5 +1,5 @@
 interface Env {
-  SCHEDULE_KV: KVNamespace;
+  SCHEDULE_KV: { get: (k: string, t: string) => Promise<unknown>; put: (k: string, v: string) => Promise<void> };
   ADMIN_PASSWORD: string;
   ASSETS: { fetch: (req: Request) => Promise<Response> };
 }

@@ -1,3 +1,4 @@
+// ====== 课程表 ======
 export interface CourseItem {
   id: string;
   time: string;
@@ -23,16 +24,89 @@ export type DayKey = keyof DaySlots;
 
 export const DAY_KEYS: DayKey[] = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday'];
 
-export const DAY_LABELS: Record<DayKey, string> = {
-  monday: '周一',
-  tuesday: '周二',
-  wednesday: '周三',
-  thursday: '周四',
-  friday: '周五',
+export const WEEK_DAYS: string[] = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'];
+
+export const DAY_LABELS: Record<string, string> = {
+  monday: '周一', tuesday: '周二', wednesday: '周三', thursday: '周四',
+  friday: '周五', saturday: '周六', sunday: '周日',
 };
 
 export function getTodayDayKey(): DayKey {
-  const day = new Date().getDay(); // 0=Sun, 1=Mon, ..., 6=Sat
+  const day = new Date().getDay();
   if (day >= 1 && day <= 5) return DAY_KEYS[day - 1];
-  return 'monday'; // 周末默认显示周一
+  return 'monday';
 }
+
+export function getTodayWeekKey(): string {
+  const day = new Date().getDay();
+  if (day === 0) return 'sunday';
+  return WEEK_DAYS[day - 1];
+}
+
+// ====== 在职人员 ======
+export interface Staff {
+  id: string;
+  name: string;
+  title: string;
+  phone: string;
+  email: string;
+  department: string;
+}
+
+// ====== 教室 ======
+export interface Classroom {
+  id: string;
+  name: string;
+  type: string;
+  capacity: number;
+  status: 'available' | 'in_use' | 'maintenance';
+  currentUser: string;
+}
+
+// ====== 钥匙 ======
+export interface KeyInfo {
+  id: string;
+  name: string;
+  location: string;
+  status: string; // "存入" | "取出" | "归还错误"
+  keyType: string;
+  department: string;
+}
+
+export interface KeyRecord {
+  id: string;
+  userName: string;
+  action: string; // "取出" | "归还"
+  keyName: string;
+  location: string;
+  time: string;
+  remark: string;
+}
+
+export interface KeyData {
+  fetchedAt: string;
+  keys: { total: number; putIn: number; takeOut: number; error: number; list: KeyInfo[] };
+  todayRecords: KeyRecord[];
+}
+
+// ====== 报告厅 ======
+export interface HallEvent {
+  id: string;
+  date: string;
+  timeSlot: string;
+  eventName: string;
+  organizer: string;
+  contactPerson: string;
+  contactPhone: string;
+  status: 'occupied' | 'free';
+}
+
+// ====== 导航 ======
+export type TabId = 'staff' | 'classroom' | 'keys' | 'hall';
+
+export const TAB_LABELS: Record<TabId, string> = {
+  staff: '人员',
+  classroom: '教室',
+  keys: '钥匙',
+  hall: '报告厅',
+};

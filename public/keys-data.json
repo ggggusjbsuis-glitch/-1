@@ -1,0 +1,1329 @@
+{
+  "stats": {
+    "total": 31,
+    "putIn": 29,
+    "takeOut": 2,
+    "error": 0,
+    "fetchedAt": "2026-06-05T15:02:12.995Z"
+  },
+  "keys": [
+    {
+      "id": "2790760566",
+      "name": "综3403",
+      "location": "未存入",
+      "department": "遵义医科大学珠海校区",
+      "status": "取出",
+      "keyType": "长期",
+      "typeName1": "",
+      "typeName2": ""
+    },
+    {
+      "id": "2785988038",
+      "name": "报3101",
+      "location": "综合楼10-01通道",
+      "department": "遵义医科大学珠海校区",
+      "status": "存入",
+      "keyType": "长期",
+      "typeName1": "",
+      "typeName2": ""
+    },
+    {
+      "id": "2789303030",
+      "name": "综3104",
+      "location": "综合楼10-02通道",
+      "department": "遵义医科大学珠海校区",
+      "status": "存入",
+      "keyType": "长期",
+      "typeName1": "",
+      "typeName2": ""
+    },
+    {
+      "id": "2790011558",
+      "name": "综3105",
+      "location": "综合楼10-03通道",
+      "department": "遵义医科大学珠海校区",
+      "status": "存入",
+      "keyType": "长期",
+      "typeName1": "",
+      "typeName2": ""
+    },
+    {
+      "id": "2790262182",
+      "name": "综3106",
+      "location": "综合楼10-04通道",
+      "department": "遵义医科大学珠海校区",
+      "status": "存入",
+      "keyType": "长期",
+      "typeName1": "",
+      "typeName2": ""
+    },
+    {
+      "id": "2785943382",
+      "name": "综3107",
+      "location": "综合楼10-05通道",
+      "department": "遵义医科大学珠海校区",
+      "status": "存入",
+      "keyType": "长期",
+      "typeName1": "",
+      "typeName2": ""
+    },
+    {
+      "id": "2786022422",
+      "name": "综3201",
+      "location": "综合楼10-06通道",
+      "department": "遵义医科大学珠海校区",
+      "status": "存入",
+      "keyType": "长期",
+      "typeName1": "",
+      "typeName2": ""
+    },
+    {
+      "id": "2785980262",
+      "name": "综3202",
+      "location": "综合楼10-07通道",
+      "department": "遵义医科大学珠海校区",
+      "status": "存入",
+      "keyType": "长期",
+      "typeName1": "",
+      "typeName2": ""
+    },
+    {
+      "id": "2788578886",
+      "name": "综3203",
+      "location": "综合楼10-08通道",
+      "department": "遵义医科大学珠海校区",
+      "status": "存入",
+      "keyType": "长期",
+      "typeName1": "",
+      "typeName2": ""
+    },
+    {
+      "id": "2786325670",
+      "name": "综3204",
+      "location": "综合楼10-09通道",
+      "department": "遵义医科大学珠海校区",
+      "status": "存入",
+      "keyType": "长期",
+      "typeName1": "",
+      "typeName2": ""
+    },
+    {
+      "id": "2789026582",
+      "name": "综3205",
+      "location": "综合楼10-10通道",
+      "department": "遵义医科大学珠海校区",
+      "status": "取出",
+      "keyType": "长期",
+      "typeName1": "",
+      "typeName2": ""
+    },
+    {
+      "id": "1497920762",
+      "name": "豫A001",
+      "location": "综合楼20-01通道",
+      "department": "遵义医科大学珠海校区",
+      "status": "存入",
+      "keyType": "长期",
+      "typeName1": "",
+      "typeName2": ""
+    },
+    {
+      "id": "2789882038",
+      "name": "综3301",
+      "location": "综合楼20-02通道",
+      "department": "遵义医科大学珠海校区",
+      "status": "存入",
+      "keyType": "长期",
+      "typeName1": "",
+      "typeName2": ""
+    },
+    {
+      "id": "2789389878",
+      "name": "综3302",
+      "location": "综合楼20-03通道",
+      "department": "遵义医科大学珠海校区",
+      "status": "存入",
+      "keyType": "长期",
+      "typeName1": "",
+      "typeName2": ""
+    },
+    {
+      "id": "2786163430",
+      "name": "综3401",
+      "location": "综合楼20-04通道",
+      "department": "遵义医科大学珠海校区",
+      "status": "存入",
+      "keyType": "长期",
+      "typeName1": "",
+      "typeName2": ""
+    },
+    {
+      "id": "2789886294",
+      "name": "综3402",
+      "location": "综合楼20-05通道",
+      "department": "遵义医科大学珠海校区",
+      "status": "存入",
+      "keyType": "长期",
+      "typeName1": "",
+      "typeName2": ""
+    },
+    {
+      "id": "2788631430",
+      "name": "综3206",
+      "location": "综合楼20-06通道",
+      "department": "遵义医科大学珠海校区",
+      "status": "存入",
+      "keyType": "长期",
+      "typeName1": "",
+      "typeName2": ""
+    },
+    {
+      "id": "2786312038",
+      "name": "综3404",
+      "location": "综合楼20-07通道",
+      "department": "遵义医科大学珠海校区",
+      "status": "存入",
+      "keyType": "长期",
+      "typeName1": "",
+      "typeName2": ""
+    },
+    {
+      "id": "2788626102",
+      "name": "综3405",
+      "location": "综合楼20-08通道",
+      "department": "遵义医科大学珠海校区",
+      "status": "存入",
+      "keyType": "长期",
+      "typeName1": "",
+      "typeName2": ""
+    },
+    {
+      "id": "2789510646",
+      "name": "综3506",
+      "location": "综合楼20-09通道",
+      "department": "遵义医科大学珠海校区",
+      "status": "存入",
+      "keyType": "长期",
+      "typeName1": "",
+      "typeName2": ""
+    },
+    {
+      "id": "2790665574",
+      "name": "综3502",
+      "location": "综合楼20-10通道",
+      "department": "遵义医科大学珠海校区",
+      "status": "存入",
+      "keyType": "长期",
+      "typeName1": "",
+      "typeName2": ""
+    },
+    {
+      "id": "2787597526",
+      "name": "综3403",
+      "location": "综合楼20-11通道",
+      "department": "遵义医科大学珠海校区",
+      "status": "存入",
+      "keyType": "长期",
+      "typeName1": "",
+      "typeName2": ""
+    },
+    {
+      "id": "2790475206",
+      "name": "综3504",
+      "location": "综合楼20-12通道",
+      "department": "遵义医科大学珠海校区",
+      "status": "存入",
+      "keyType": "长期",
+      "typeName1": "",
+      "typeName2": ""
+    },
+    {
+      "id": "2786862214",
+      "name": "综3505",
+      "location": "综合楼20-13通道",
+      "department": "遵义医科大学珠海校区",
+      "status": "存入",
+      "keyType": "长期",
+      "typeName1": "",
+      "typeName2": ""
+    },
+    {
+      "id": "2786424966",
+      "name": "综3406",
+      "location": "综合楼20-14通道",
+      "department": "遵义医科大学珠海校区",
+      "status": "存入",
+      "keyType": "长期",
+      "typeName1": "",
+      "typeName2": ""
+    },
+    {
+      "id": "2789097894",
+      "name": "综3602",
+      "location": "综合楼20-15通道",
+      "department": "遵义医科大学珠海校区",
+      "status": "存入",
+      "keyType": "长期",
+      "typeName1": "",
+      "typeName2": ""
+    },
+    {
+      "id": "2788725286",
+      "name": "综3603",
+      "location": "综合楼20-16通道",
+      "department": "遵义医科大学珠海校区",
+      "status": "存入",
+      "keyType": "长期",
+      "typeName1": "",
+      "typeName2": ""
+    },
+    {
+      "id": "2786664854",
+      "name": "综3604",
+      "location": "综合楼20-17通道",
+      "department": "遵义医科大学珠海校区",
+      "status": "存入",
+      "keyType": "长期",
+      "typeName1": "",
+      "typeName2": ""
+    },
+    {
+      "id": "1497515466",
+      "name": "综3503",
+      "location": "综合楼20-18通道",
+      "department": "遵义医科大学珠海校区",
+      "status": "存入",
+      "keyType": "长期",
+      "typeName1": "",
+      "typeName2": ""
+    },
+    {
+      "id": "2786365990",
+      "name": "综3607",
+      "location": "综合楼20-19通道",
+      "department": "遵义医科大学珠海校区",
+      "status": "存入",
+      "keyType": "长期",
+      "typeName1": "",
+      "typeName2": ""
+    },
+    {
+      "id": "2786606534",
+      "name": "综3606",
+      "location": "综合楼20-20通道",
+      "department": "遵义医科大学珠海校区",
+      "status": "存入",
+      "keyType": "长期",
+      "typeName1": "",
+      "typeName2": ""
+    }
+  ],
+  "todayStats": {
+    "total": 100,
+    "borrow": 49,
+    "return_": 51,
+    "today": "2026-06-05"
+  },
+  "todayRecords": [
+    {
+      "id": "005dc210-9a56-48d0-a476-bfa52dd14513",
+      "userName": "23级临床12班鲍明月",
+      "action": "归还",
+      "keyName": "综3401",
+      "location": "综合楼20-04通道",
+      "time": "2026-06-05 22:27:55",
+      "remark": "授权归还",
+      "checkType": "人脸"
+    },
+    {
+      "id": "f4073c74-b1e1-4e78-a974-f234188cdb35",
+      "userName": "23级临床12班鲍明月",
+      "action": "归还",
+      "keyName": "综3402",
+      "location": "综合楼20-05通道",
+      "time": "2026-06-05 22:27:52",
+      "remark": "授权归还",
+      "checkType": "人脸"
+    },
+    {
+      "id": "9319ef43-5269-41e9-abb9-bc0b60d3e35f",
+      "userName": "23级临床12班鲍明月",
+      "action": "取出",
+      "keyName": "综3401",
+      "location": "综合楼20-04通道",
+      "time": "2026-06-05 22:16:48",
+      "remark": "授权取出",
+      "checkType": "人脸"
+    },
+    {
+      "id": "4f40bb46-8485-49a2-bf4f-f82e0692262b",
+      "userName": "23级临床12班鲍明月",
+      "action": "取出",
+      "keyName": "综3402",
+      "location": "综合楼20-05通道",
+      "time": "2026-06-05 22:16:47",
+      "remark": "授权取出",
+      "checkType": "人脸"
+    },
+    {
+      "id": "d0279796-836f-45bd-813e-4b5457061827",
+      "userName": "打扫—汪林静",
+      "action": "归还",
+      "keyName": "综3503",
+      "location": "综合楼20-18通道",
+      "time": "2026-06-05 22:12:06",
+      "remark": "授权归还",
+      "checkType": "指纹"
+    },
+    {
+      "id": "2e11f3cb-9f3d-4f74-8d3e-83445e98c778",
+      "userName": "打扫—汪林静",
+      "action": "归还",
+      "keyName": "综3504",
+      "location": "综合楼20-12通道",
+      "time": "2026-06-05 22:12:02",
+      "remark": "授权归还",
+      "checkType": "指纹"
+    },
+    {
+      "id": "27466252-8c40-470c-80f9-c1a1841ed84e",
+      "userName": "打扫—汪林静",
+      "action": "归还",
+      "keyName": "综3505",
+      "location": "综合楼20-13通道",
+      "time": "2026-06-05 22:11:59",
+      "remark": "授权归还",
+      "checkType": "指纹"
+    },
+    {
+      "id": "b6212429-ce58-435b-88ae-19e6cd5cda58",
+      "userName": "打扫—汪林静",
+      "action": "归还",
+      "keyName": "综3506",
+      "location": "综合楼20-09通道",
+      "time": "2026-06-05 22:11:55",
+      "remark": "授权归还",
+      "checkType": "指纹"
+    },
+    {
+      "id": "67e26b0c-8db7-4984-a9bf-72cc86f198a6",
+      "userName": "打扫—汪林静",
+      "action": "取出",
+      "keyName": "综3506",
+      "location": "综合楼20-09通道",
+      "time": "2026-06-05 21:58:07",
+      "remark": "授权取出",
+      "checkType": "指纹"
+    },
+    {
+      "id": "671f9e9d-ef31-401f-a96c-4c9e82e051e5",
+      "userName": "打扫—汪林静",
+      "action": "取出",
+      "keyName": "综3505",
+      "location": "综合楼20-13通道",
+      "time": "2026-06-05 21:58:00",
+      "remark": "授权取出",
+      "checkType": "指纹"
+    },
+    {
+      "id": "7b2aba91-ac2b-4cbe-9faa-1c88b531b709",
+      "userName": "打扫—汪林静",
+      "action": "取出",
+      "keyName": "综3504",
+      "location": "综合楼20-12通道",
+      "time": "2026-06-05 21:57:57",
+      "remark": "授权取出",
+      "checkType": "指纹"
+    },
+    {
+      "id": "be740893-a93a-48d5-ba3b-3d1c6fcf0ff9",
+      "userName": "打扫—汪林静",
+      "action": "取出",
+      "keyName": "综3503",
+      "location": "综合楼20-18通道",
+      "time": "2026-06-05 21:57:52",
+      "remark": "授权取出",
+      "checkType": "指纹"
+    },
+    {
+      "id": "4267d548-60d4-42f8-92b2-c3f5a2d32e35",
+      "userName": "2025级护理学系护理四班陈雯雯",
+      "action": "归还",
+      "keyName": "综3504",
+      "location": "综合楼20-12通道",
+      "time": "2026-06-05 21:21:33",
+      "remark": "授权归还",
+      "checkType": "指纹"
+    },
+    {
+      "id": "0645ea02-e59d-4abd-897c-dc46f09a7ff1",
+      "userName": "缪睿",
+      "action": "归还",
+      "keyName": "综3503",
+      "location": "综合楼20-18通道",
+      "time": "2026-06-05 21:08:21",
+      "remark": "授权归还",
+      "checkType": "指纹"
+    },
+    {
+      "id": "5469e3e3-fe23-4317-8cc7-9fbf465a8414",
+      "userName": "24级护理6班杨向东",
+      "action": "归还",
+      "keyName": "综3204",
+      "location": "综合楼10-09通道",
+      "time": "2026-06-05 20:12:05",
+      "remark": "授权归还",
+      "checkType": "人脸"
+    },
+    {
+      "id": "861c4096-13d1-4211-a38b-0bf5712498ff",
+      "userName": "24级护理6班杨向东",
+      "action": "取出",
+      "keyName": "综3204",
+      "location": "综合楼10-09通道",
+      "time": "2026-06-05 19:04:37",
+      "remark": "授权取出",
+      "checkType": "人脸"
+    },
+    {
+      "id": "0e4683b3-912a-429f-86fa-c77286344bda",
+      "userName": "24级护理6班杨向东",
+      "action": "归还",
+      "keyName": "综3404",
+      "location": "综合楼20-07通道",
+      "time": "2026-06-05 19:04:31",
+      "remark": "授权归还",
+      "checkType": "指纹"
+    },
+    {
+      "id": "fd6bcff5-1df1-455e-95b0-107bbb6619a1",
+      "userName": "24级护理6班杨向东",
+      "action": "归还",
+      "keyName": "综3403",
+      "location": "综合楼20-11通道",
+      "time": "2026-06-05 19:04:28",
+      "remark": "授权归还",
+      "checkType": "指纹"
+    },
+    {
+      "id": "339f6e36-9b48-4fd3-9a21-55f7e26d7216",
+      "userName": "2025级护理学系护理四班陈雯雯",
+      "action": "取出",
+      "keyName": "综3504",
+      "location": "综合楼20-12通道",
+      "time": "2026-06-05 18:49:07",
+      "remark": "授权取出",
+      "checkType": "人脸"
+    },
+    {
+      "id": "d7c915fd-a7c9-41af-b913-241b2f8b59ed",
+      "userName": "23级口腔陈敏",
+      "action": "归还",
+      "keyName": "综3401",
+      "location": "综合楼20-04通道",
+      "time": "2026-06-05 18:44:57",
+      "remark": "授权归还",
+      "checkType": "指纹"
+    },
+    {
+      "id": "e12c1d62-4d9b-4c00-b485-5a49294833a0",
+      "userName": "24级临床10班王灿",
+      "action": "取出",
+      "keyName": "综3404",
+      "location": "综合楼20-07通道",
+      "time": "2026-06-05 18:43:45",
+      "remark": "授权取出",
+      "checkType": "指纹"
+    },
+    {
+      "id": "246eabd1-cfa5-4677-8382-7cde00cab1f3",
+      "userName": "24级临床10班王灿",
+      "action": "取出",
+      "keyName": "综3403",
+      "location": "综合楼20-11通道",
+      "time": "2026-06-05 18:43:45",
+      "remark": "授权取出",
+      "checkType": "指纹"
+    },
+    {
+      "id": "77b4cff6-c7a4-4fca-ab5e-4d3e5882fabc",
+      "userName": "缪睿",
+      "action": "取出",
+      "keyName": "综3503",
+      "location": "综合楼20-18通道",
+      "time": "2026-06-05 18:23:25",
+      "remark": "授权取出",
+      "checkType": "指纹"
+    },
+    {
+      "id": "2d481ef8-4543-46b7-b97c-936d7f959cfd",
+      "userName": "24级影像1班刘龙",
+      "action": "取出",
+      "keyName": "综3205",
+      "location": "综合楼10-10通道",
+      "time": "2026-06-05 18:00:12",
+      "remark": "授权取出",
+      "checkType": "指纹"
+    },
+    {
+      "id": "576c09d5-83af-4a06-bc6a-06032ebf2643",
+      "userName": "24级社体一班张永焕",
+      "action": "归还",
+      "keyName": "综3106",
+      "location": "综合楼10-04通道",
+      "time": "2026-06-05 17:51:57",
+      "remark": "授权归还",
+      "checkType": "指纹"
+    },
+    {
+      "id": "508921ed-8bf6-48c2-b1d3-b7096120bcb3",
+      "userName": "袁金印",
+      "action": "归还",
+      "keyName": "综3503",
+      "location": "综合楼20-18通道",
+      "time": "2026-06-05 17:48:57",
+      "remark": "授权归还",
+      "checkType": "指纹"
+    },
+    {
+      "id": "1acffdbc-f552-4487-82ba-db37bc8dbb34",
+      "userName": "24级临床11班徐涛",
+      "action": "归还",
+      "keyName": "综3405",
+      "location": "综合楼20-08通道",
+      "time": "2026-06-05 17:34:11",
+      "remark": "授权归还",
+      "checkType": "人脸"
+    },
+    {
+      "id": "6503a778-2514-481f-8533-d1150f9cb8d0",
+      "userName": "蓝芳",
+      "action": "归还",
+      "keyName": "报3101",
+      "location": "综合楼10-01通道",
+      "time": "2026-06-05 17:33:46",
+      "remark": "授权归还",
+      "checkType": "指纹"
+    },
+    {
+      "id": "d45b25d8-50ab-47f7-b01a-49e41491fb49",
+      "userName": "2025级临床医学4班刘宇涛",
+      "action": "归还",
+      "keyName": "综3302",
+      "location": "综合楼20-03通道",
+      "time": "2026-06-05 17:15:18",
+      "remark": "授权归还",
+      "checkType": "指纹"
+    },
+    {
+      "id": "a30b2ff4-b7c5-413b-ba8c-88ab37fa4f2e",
+      "userName": "2025级临床医学4班刘宇涛",
+      "action": "归还",
+      "keyName": "综3301",
+      "location": "综合楼20-02通道",
+      "time": "2026-06-05 17:15:15",
+      "remark": "授权归还",
+      "checkType": "指纹"
+    },
+    {
+      "id": "89e308a7-835b-4344-bc50-f43b614f7be8",
+      "userName": "2024级临床13班张诗韵1",
+      "action": "归还",
+      "keyName": "综3504",
+      "location": "综合楼20-12通道",
+      "time": "2026-06-05 17:07:48",
+      "remark": "授权归还",
+      "checkType": "指纹"
+    },
+    {
+      "id": "1d4c7a26-eab3-494c-86f1-92109e2cdec2",
+      "userName": "23级护理7班陈奕凝",
+      "action": "取出",
+      "keyName": "综3301",
+      "location": "综合楼20-02通道",
+      "time": "2026-06-05 16:56:50",
+      "remark": "授权取出",
+      "checkType": "指纹"
+    },
+    {
+      "id": "4c9c3d17-990e-407c-9da9-91762ab98262",
+      "userName": "23级护理7班陈奕凝",
+      "action": "取出",
+      "keyName": "综3302",
+      "location": "综合楼20-03通道",
+      "time": "2026-06-05 16:56:49",
+      "remark": "授权取出",
+      "checkType": "指纹"
+    },
+    {
+      "id": "3b3be6cb-354f-4adc-bc1e-e8e0c1c1a749",
+      "userName": "24级临床13班艾瑞嘉禾",
+      "action": "归还",
+      "keyName": "综3506",
+      "location": "综合楼20-09通道",
+      "time": "2026-06-05 16:46:25",
+      "remark": "授权归还",
+      "checkType": "指纹"
+    },
+    {
+      "id": "a3fdbe6f-5e67-4967-970f-3d02a20de3db",
+      "userName": "24级临床13班艾瑞嘉禾",
+      "action": "归还",
+      "keyName": "综3505",
+      "location": "综合楼20-13通道",
+      "time": "2026-06-05 16:46:23",
+      "remark": "授权归还",
+      "checkType": "指纹"
+    },
+    {
+      "id": "fabb6e5f-18e8-4da3-b3b4-f7a491658660",
+      "userName": "24级临床11班徐涛",
+      "action": "取出",
+      "keyName": "综3405",
+      "location": "综合楼20-08通道",
+      "time": "2026-06-05 16:05:58",
+      "remark": "授权取出",
+      "checkType": "人脸"
+    },
+    {
+      "id": "d41e8669-39cb-46c4-a74c-ae13164a1305",
+      "userName": "24级临床医学11班郭翔",
+      "action": "归还",
+      "keyName": "综3201",
+      "location": "综合楼10-06通道",
+      "time": "2026-06-05 16:02:39",
+      "remark": "授权归还",
+      "checkType": "人脸"
+    },
+    {
+      "id": "4970db71-ab87-4fcb-b333-dbfc8b6ae25d",
+      "userName": "24级临床医学11班郭翔",
+      "action": "取出",
+      "keyName": "综3201",
+      "location": "综合楼10-06通道",
+      "time": "2026-06-05 14:18:05",
+      "remark": "授权取出",
+      "checkType": "人脸"
+    },
+    {
+      "id": "08a79123-35f2-4bdd-8a04-2ffea63fa64c",
+      "userName": "24级临床13班艾瑞嘉禾",
+      "action": "取出",
+      "keyName": "综3506",
+      "location": "综合楼20-09通道",
+      "time": "2026-06-05 14:15:00",
+      "remark": "授权取出",
+      "checkType": "指纹"
+    },
+    {
+      "id": "04e51a41-f9b3-47b9-98a3-1fa238c94678",
+      "userName": "24级临床13班艾瑞嘉禾",
+      "action": "取出",
+      "keyName": "综3505",
+      "location": "综合楼20-13通道",
+      "time": "2026-06-05 14:14:52",
+      "remark": "授权取出",
+      "checkType": "指纹"
+    },
+    {
+      "id": "cd5caf2c-0b1e-47af-b7ab-44014e2b3d38",
+      "userName": "2024级临床13班张诗韵1",
+      "action": "取出",
+      "keyName": "综3504",
+      "location": "综合楼20-12通道",
+      "time": "2026-06-05 14:12:09",
+      "remark": "授权取出",
+      "checkType": "指纹"
+    },
+    {
+      "id": "020cd7f8-baf6-42da-ac21-f784325c44e4",
+      "userName": "袁金印",
+      "action": "取出",
+      "keyName": "综3503",
+      "location": "综合楼20-18通道",
+      "time": "2026-06-05 13:55:03",
+      "remark": "授权取出",
+      "checkType": "指纹"
+    },
+    {
+      "id": "a0fb26b6-76cd-4347-b8ab-3c698a8b75c5",
+      "userName": "25护理2崔家喧",
+      "action": "归还",
+      "keyName": "综3403",
+      "location": "综合楼20-11通道",
+      "time": "2026-06-05 12:02:26",
+      "remark": "授权归还",
+      "checkType": "人脸"
+    },
+    {
+      "id": "87f284da-7e78-4c3f-ad5b-793a711e3150",
+      "userName": "25护理2崔家喧",
+      "action": "归还",
+      "keyName": "综3402",
+      "location": "综合楼20-05通道",
+      "time": "2026-06-05 12:02:21",
+      "remark": "授权归还",
+      "checkType": "人脸"
+    },
+    {
+      "id": "617b3926-b98c-40f5-ae26-0e5f0afc9262",
+      "userName": "2025级护理学4班黎子熙",
+      "action": "归还",
+      "keyName": "综3502",
+      "location": "综合楼20-10通道",
+      "time": "2026-06-05 12:01:58",
+      "remark": "授权归还",
+      "checkType": "人脸"
+    },
+    {
+      "id": "19ffc61b-ef15-4615-8466-19214abb80b8",
+      "userName": "2025级护理学3班梁熙漩",
+      "action": "归还",
+      "keyName": "综3404",
+      "location": "综合楼20-07通道",
+      "time": "2026-06-05 12:00:41",
+      "remark": "授权归还",
+      "checkType": "人脸"
+    },
+    {
+      "id": "2ac1d078-f725-40c9-a30f-f1f2b3751cc4",
+      "userName": "2025级护理学3班梁熙漩",
+      "action": "归还",
+      "keyName": "综3405",
+      "location": "综合楼20-08通道",
+      "time": "2026-06-05 12:00:36",
+      "remark": "授权归还",
+      "checkType": "人脸"
+    },
+    {
+      "id": "cf969bf2-9284-4c2d-88b1-4ecd8b8593c1",
+      "userName": "2025级护理学系护理四班陈雯雯",
+      "action": "归还",
+      "keyName": "综3406",
+      "location": "综合楼20-14通道",
+      "time": "2026-06-05 11:56:23",
+      "remark": "授权归还",
+      "checkType": "人脸"
+    },
+    {
+      "id": "41fccf64-f2a0-48ab-8060-2175238de3f6",
+      "userName": "2025级临床医学11班赵力霖",
+      "action": "归还",
+      "keyName": "综3105",
+      "location": "综合楼10-03通道",
+      "time": "2026-06-05 11:51:16",
+      "remark": "授权归还",
+      "checkType": "指纹"
+    },
+    {
+      "id": "6c132c22-82f4-408a-a58a-cf5e63d9a5bf",
+      "userName": "2025级 生物工程2班文光明",
+      "action": "归还",
+      "keyName": "综3104",
+      "location": "综合楼10-02通道",
+      "time": "2026-06-05 11:49:39",
+      "remark": "授权归还",
+      "checkType": "指纹"
+    },
+    {
+      "id": "d379c276-700b-4f80-b1da-925990f8be22",
+      "userName": "蓝芳",
+      "action": "取出",
+      "keyName": "报3101",
+      "location": "综合楼10-01通道",
+      "time": "2026-06-05 11:49:27",
+      "remark": "授权取出",
+      "checkType": "指纹"
+    },
+    {
+      "id": "702b0b42-4cc8-4600-92b8-aed24605a06d",
+      "userName": "张老板",
+      "action": "归还",
+      "keyName": "报3101",
+      "location": "综合楼10-01通道",
+      "time": "2026-06-05 11:39:52",
+      "remark": "授权归还",
+      "checkType": "指纹"
+    },
+    {
+      "id": "3261f325-cf71-4442-8112-caa1db8eee27",
+      "userName": "24级临床四班潘江淋",
+      "action": "归还",
+      "keyName": "综3504",
+      "location": "综合楼20-12通道",
+      "time": "2026-06-05 11:08:46",
+      "remark": "授权归还",
+      "checkType": "指纹"
+    },
+    {
+      "id": "15bdb272-14d0-4fdc-872e-b1b5156a3b2a",
+      "userName": "张老板",
+      "action": "取出",
+      "keyName": "报3101",
+      "location": "综合楼10-01通道",
+      "time": "2026-06-05 10:49:06",
+      "remark": "授权取出",
+      "checkType": "指纹"
+    },
+    {
+      "id": "1ee8a746-f71d-4b98-a155-98be3b05d68f",
+      "userName": "24级临床4班林新磊",
+      "action": "归还",
+      "keyName": "综3505",
+      "location": "综合楼20-13通道",
+      "time": "2026-06-05 10:48:32",
+      "remark": "授权归还",
+      "checkType": "指纹"
+    },
+    {
+      "id": "d541754c-c339-4c2b-9e15-fb1d480dff78",
+      "userName": "24级临床4班黄炜昊",
+      "action": "归还",
+      "keyName": "综3506",
+      "location": "综合楼20-09通道",
+      "time": "2026-06-05 10:40:59",
+      "remark": "授权归还",
+      "checkType": "指纹"
+    },
+    {
+      "id": "d978a61a-b932-4870-b52e-78d94e74ae29",
+      "userName": "24级临床4班胡洁",
+      "action": "归还",
+      "keyName": "综3503",
+      "location": "综合楼20-18通道",
+      "time": "2026-06-05 10:24:22",
+      "remark": "授权归还",
+      "checkType": "指纹"
+    },
+    {
+      "id": "c6be56bb-b3cc-4ccf-bd64-87b289d217fc",
+      "userName": "2025级临床3班徐鑫豪",
+      "action": "归还",
+      "keyName": "综3107",
+      "location": "综合楼10-05通道",
+      "time": "2026-06-05 10:13:14",
+      "remark": "授权归还",
+      "checkType": "指纹"
+    },
+    {
+      "id": "a109c014-e00a-4079-8728-a22b97ade693",
+      "userName": "23级口腔陈敏",
+      "action": "取出",
+      "keyName": "综3401",
+      "location": "综合楼20-04通道",
+      "time": "2026-06-05 10:10:31",
+      "remark": "授权取出",
+      "checkType": "指纹"
+    },
+    {
+      "id": "cb01ab19-f9b8-4b5c-a4de-af27a250b8dc",
+      "userName": "2025级护理学3班梁熙漩",
+      "action": "取出",
+      "keyName": "综3404",
+      "location": "综合楼20-07通道",
+      "time": "2026-06-05 10:04:43",
+      "remark": "授权取出",
+      "checkType": "人脸"
+    },
+    {
+      "id": "90d7c869-203d-44d5-b0ff-23a10df06c91",
+      "userName": "2025级护理学3班梁熙漩",
+      "action": "取出",
+      "keyName": "综3405",
+      "location": "综合楼20-08通道",
+      "time": "2026-06-05 10:04:42",
+      "remark": "授权取出",
+      "checkType": "人脸"
+    },
+    {
+      "id": "0732d390-ce5c-439c-b9ff-9f5dd500aa6f",
+      "userName": "2025级护理学4班黎子熙",
+      "action": "取出",
+      "keyName": "综3502",
+      "location": "综合楼20-10通道",
+      "time": "2026-06-05 10:03:59",
+      "remark": "授权取出",
+      "checkType": "人脸"
+    },
+    {
+      "id": "e763238f-f2be-49b2-9315-98a04f00b27c",
+      "userName": "25护理2崔家喧",
+      "action": "取出",
+      "keyName": "综3403",
+      "location": "综合楼20-11通道",
+      "time": "2026-06-05 10:03:42",
+      "remark": "授权取出",
+      "checkType": "人脸"
+    },
+    {
+      "id": "1585d82d-491c-49b8-9617-eec3683c5868",
+      "userName": "2025级护理学系护理四班陈雯雯",
+      "action": "取出",
+      "keyName": "综3406",
+      "location": "综合楼20-14通道",
+      "time": "2026-06-05 10:02:53",
+      "remark": "授权取出",
+      "checkType": "人脸"
+    },
+    {
+      "id": "e05ecb39-3034-413a-a45c-4f6a2c5c0df0",
+      "userName": "2025级临床医学11班赵力霖",
+      "action": "取出",
+      "keyName": "综3105",
+      "location": "综合楼10-03通道",
+      "time": "2026-06-05 09:58:08",
+      "remark": "授权取出",
+      "checkType": "指纹"
+    },
+    {
+      "id": "8b447095-ef93-45f7-a5cc-a2989b1e974f",
+      "userName": "2025级临床医学11班赵力霖",
+      "action": "归还",
+      "keyName": "综3204",
+      "location": "综合楼10-09通道",
+      "time": "2026-06-05 09:55:55",
+      "remark": "授权归还",
+      "checkType": "指纹"
+    },
+    {
+      "id": "16fbbfed-8182-41a2-8a1c-21873f5772f8",
+      "userName": "2025级临床医学7班王国剑",
+      "action": "归还",
+      "keyName": "综3404",
+      "location": "综合楼20-07通道",
+      "time": "2026-06-05 09:50:00",
+      "remark": "授权归还",
+      "checkType": "指纹"
+    },
+    {
+      "id": "17ed9c01-1234-4cba-8342-e5c5eb77c7f2",
+      "userName": "2025级临床医学11班赵力霖",
+      "action": "取出",
+      "keyName": "综3204",
+      "location": "综合楼10-09通道",
+      "time": "2026-06-05 09:28:28",
+      "remark": "授权取出",
+      "checkType": "指纹"
+    },
+    {
+      "id": "c91c4f9f-6b09-4d95-9640-1746b9551022",
+      "userName": "2025级临床医学4班刘宇涛",
+      "action": "归还",
+      "keyName": "综3401",
+      "location": "综合楼20-04通道",
+      "time": "2026-06-05 09:26:15",
+      "remark": "授权归还",
+      "checkType": "指纹"
+    },
+    {
+      "id": "3665a61d-0df6-4cec-979b-bbdb6519ca2c",
+      "userName": "23级口腔陈敏",
+      "action": "取出",
+      "keyName": "综3402",
+      "location": "综合楼20-05通道",
+      "time": "2026-06-05 08:32:49",
+      "remark": "授权取出",
+      "checkType": "指纹"
+    },
+    {
+      "id": "584cb3d4-319d-4856-9a77-4772dbba9fdf",
+      "userName": "23级口腔陈敏",
+      "action": "取出",
+      "keyName": "综3401",
+      "location": "综合楼20-04通道",
+      "time": "2026-06-05 08:22:32",
+      "remark": "授权取出",
+      "checkType": "指纹"
+    },
+    {
+      "id": "aa0c6a5e-a829-4858-a303-a51110d22c72",
+      "userName": "2025级临床3班徐鑫豪",
+      "action": "取出",
+      "keyName": "综3107",
+      "location": "综合楼10-05通道",
+      "time": "2026-06-05 08:21:59",
+      "remark": "授权取出",
+      "checkType": "指纹"
+    },
+    {
+      "id": "f7853a50-367a-4303-a5cf-3801d914c7c7",
+      "userName": "24级临床4班胡洁",
+      "action": "取出",
+      "keyName": "综3503",
+      "location": "综合楼20-18通道",
+      "time": "2026-06-05 08:13:17",
+      "remark": "授权取出",
+      "checkType": "指纹"
+    },
+    {
+      "id": "81e42260-6e51-4607-a274-cc3eb48b228e",
+      "userName": "24级临床4班黄炜昊",
+      "action": "取出",
+      "keyName": "综3506",
+      "location": "综合楼20-09通道",
+      "time": "2026-06-05 08:12:45",
+      "remark": "授权取出",
+      "checkType": "指纹"
+    },
+    {
+      "id": "642fbc85-1255-4192-be13-7863721a8b96",
+      "userName": "24级临床4班林新磊",
+      "action": "取出",
+      "keyName": "综3505",
+      "location": "综合楼20-13通道",
+      "time": "2026-06-05 08:12:16",
+      "remark": "授权取出",
+      "checkType": "指纹"
+    },
+    {
+      "id": "1b5b8fd5-9d02-47dd-87ef-1460e6ba4a7e",
+      "userName": "24级临床四班潘江淋",
+      "action": "取出",
+      "keyName": "综3504",
+      "location": "综合楼20-12通道",
+      "time": "2026-06-05 08:11:09",
+      "remark": "授权取出",
+      "checkType": "指纹"
+    },
+    {
+      "id": "92f17c39-dbd1-467f-a62e-7684744784ef",
+      "userName": "2025级 生物工程2班文光明",
+      "action": "取出",
+      "keyName": "综3104",
+      "location": "综合楼10-02通道",
+      "time": "2026-06-05 08:10:41",
+      "remark": "授权取出",
+      "checkType": "指纹"
+    },
+    {
+      "id": "e3519092-c075-4b44-a24c-c20ca136be8f",
+      "userName": "24级临床9班韩佳龙",
+      "action": "取出",
+      "keyName": "综3106",
+      "location": "综合楼10-04通道",
+      "time": "2026-06-05 07:48:28",
+      "remark": "授权取出",
+      "checkType": "指纹"
+    },
+    {
+      "id": "b35e74e1-db98-4821-a687-ad053e19ac39",
+      "userName": "打扫—汪林静",
+      "action": "归还",
+      "keyName": "综3506",
+      "location": "综合楼20-09通道",
+      "time": "2026-06-04 22:45:01",
+      "remark": "授权归还",
+      "checkType": "刷卡"
+    },
+    {
+      "id": "de35914c-4a2e-41f2-857d-f59c95d83d60",
+      "userName": "打扫—汪林静",
+      "action": "归还",
+      "keyName": "综3505",
+      "location": "综合楼20-13通道",
+      "time": "2026-06-04 22:45:00",
+      "remark": "授权归还",
+      "checkType": "刷卡"
+    },
+    {
+      "id": "48e6bf04-f78e-4333-a543-e958c9c991c2",
+      "userName": "打扫—汪林静",
+      "action": "归还",
+      "keyName": "综3504",
+      "location": "综合楼20-12通道",
+      "time": "2026-06-04 22:44:57",
+      "remark": "授权归还",
+      "checkType": "刷卡"
+    },
+    {
+      "id": "10e92f19-6c73-4ddb-adc5-b878c4fa3c90",
+      "userName": "打扫—汪林静",
+      "action": "归还",
+      "keyName": "综3503",
+      "location": "综合楼20-18通道",
+      "time": "2026-06-04 22:44:54",
+      "remark": "授权归还",
+      "checkType": "刷卡"
+    },
+    {
+      "id": "c8dfdb1f-5390-44b3-996e-dfbec6ec5df7",
+      "userName": "打扫—汪林静",
+      "action": "取出",
+      "keyName": "综3506",
+      "location": "综合楼20-09通道",
+      "time": "2026-06-04 22:36:03",
+      "remark": "授权取出",
+      "checkType": "指纹"
+    },
+    {
+      "id": "71fe551c-fe84-429e-bc72-d95cb6a1e8f1",
+      "userName": "打扫—汪林静",
+      "action": "取出",
+      "keyName": "综3503",
+      "location": "综合楼20-18通道",
+      "time": "2026-06-04 22:35:56",
+      "remark": "授权取出",
+      "checkType": "指纹"
+    },
+    {
+      "id": "5dc4c7d8-20b7-4c17-acc2-73ad301f1ec0",
+      "userName": "打扫—汪林静",
+      "action": "取出",
+      "keyName": "综3505",
+      "location": "综合楼20-13通道",
+      "time": "2026-06-04 22:35:51",
+      "remark": "授权取出",
+      "checkType": "指纹"
+    },
+    {
+      "id": "59beda5d-c94d-4754-939f-a1b74ce636bb",
+      "userName": "打扫—汪林静",
+      "action": "取出",
+      "keyName": "综3504",
+      "location": "综合楼20-12通道",
+      "time": "2026-06-04 22:35:47",
+      "remark": "授权取出",
+      "checkType": "指纹"
+    },
+    {
+      "id": "c249cb96-87d7-4886-8279-7164cc7cfd21",
+      "userName": "2024级临床6班刘铠瑞",
+      "action": "归还",
+      "keyName": "综3504",
+      "location": "综合楼20-12通道",
+      "time": "2026-06-04 22:02:05",
+      "remark": "授权归还",
+      "checkType": "人脸"
+    },
+    {
+      "id": "5dad6ccc-88b3-47b8-b0fb-39f91ec96dd7",
+      "userName": "25级李璐医学影像学1班",
+      "action": "归还",
+      "keyName": "报3101",
+      "location": "综合楼10-01通道",
+      "time": "2026-06-04 20:47:53",
+      "remark": "授权归还",
+      "checkType": "人脸"
+    },
+    {
+      "id": "3702a589-dc18-4524-a39f-34103304e196",
+      "userName": "蔡泽盛24临床4班 ",
+      "action": "归还",
+      "keyName": "综3506",
+      "location": "综合楼20-09通道",
+      "time": "2026-06-04 20:25:26",
+      "remark": "授权归还",
+      "checkType": "刷卡"
+    },
+    {
+      "id": "4fed3012-a7dc-4cbd-b548-2c66e72eb0e8",
+      "userName": "24级口腔1班王柳苏",
+      "action": "归还",
+      "keyName": "综3405",
+      "location": "综合楼20-08通道",
+      "time": "2026-06-04 20:23:37",
+      "remark": "授权归还",
+      "checkType": "指纹"
+    },
+    {
+      "id": "788c341d-f489-4341-86e8-2729fe3858a9",
+      "userName": "24级口腔1班王柳苏",
+      "action": "归还",
+      "keyName": "综3406",
+      "location": "综合楼20-14通道",
+      "time": "2026-06-04 20:23:34",
+      "remark": "授权归还",
+      "checkType": "指纹"
+    },
+    {
+      "id": "dcab2cc4-28c4-48fe-8a25-8da5267df355",
+      "userName": "24级口腔1班王柳苏",
+      "action": "取出",
+      "keyName": "综3406",
+      "location": "综合楼20-14通道",
+      "time": "2026-06-04 20:03:15",
+      "remark": "授权取出",
+      "checkType": "指纹"
+    },
+    {
+      "id": "4c193f4b-b8e5-4960-8438-3874547d11c7",
+      "userName": "24级口腔1班王柳苏",
+      "action": "取出",
+      "keyName": "综3405",
+      "location": "综合楼20-08通道",
+      "time": "2026-06-04 20:03:13",
+      "remark": "授权取出",
+      "checkType": "指纹"
+    },
+    {
+      "id": "7d30065e-43f8-4b21-8733-9ac55dffe281",
+      "userName": "2024级临床6班刘铠瑞",
+      "action": "取出",
+      "keyName": "综3504",
+      "location": "综合楼20-12通道",
+      "time": "2026-06-04 19:58:49",
+      "remark": "授权取出",
+      "checkType": "人脸"
+    },
+    {
+      "id": "5f921da7-a20d-42c8-8f04-410e99245f13",
+      "userName": "2024级临床6班刘铠瑞",
+      "action": "归还",
+      "keyName": "综3403",
+      "location": "综合楼20-11通道",
+      "time": "2026-06-04 19:58:43",
+      "remark": "授权归还",
+      "checkType": "人脸"
+    },
+    {
+      "id": "7c2490cd-a3d8-42ad-9b9b-c88846813327",
+      "userName": "2024级临床6班刘铠瑞",
+      "action": "取出",
+      "keyName": "综3403",
+      "location": "综合楼20-11通道",
+      "time": "2026-06-04 19:53:23",
+      "remark": "授权取出",
+      "checkType": "人脸"
+    },
+    {
+      "id": "2bab8594-341a-440b-bb16-2f6b63036f53",
+      "userName": "2025级临床医学7班王国剑",
+      "action": "取出",
+      "keyName": "综3404",
+      "location": "综合楼20-07通道",
+      "time": "2026-06-04 18:49:17",
+      "remark": "授权取出",
+      "checkType": "指纹"
+    },
+    {
+      "id": "93db7bae-aeb9-400d-9f75-e37383276fa9",
+      "userName": "蔡泽盛24临床4班 ",
+      "action": "取出",
+      "keyName": "综3506",
+      "location": "综合楼20-09通道",
+      "time": "2026-06-04 18:25:30",
+      "remark": "授权取出",
+      "checkType": "指纹"
+    },
+    {
+      "id": "1e80f244-e671-4368-910b-e23ebae492a7",
+      "userName": "24级临床12班刘时清钦",
+      "action": "归还",
+      "keyName": "综3503",
+      "location": "综合楼20-18通道",
+      "time": "2026-06-04 18:15:42",
+      "remark": "授权归还",
+      "checkType": "刷卡"
+    },
+    {
+      "id": "1a163a2b-29e5-4537-bcce-a703066607ed",
+      "userName": "24级助产1班 刘雪雪",
+      "action": "归还",
+      "keyName": "综3502",
+      "location": "综合楼20-10通道",
+      "time": "2026-06-04 17:54:47",
+      "remark": "授权归还",
+      "checkType": "指纹"
+    }
+  ]
+}

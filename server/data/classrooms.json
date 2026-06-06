@@ -1,0 +1,66 @@
+[
+  {
+    "id": "1",
+    "name": "综3104",
+    "type": "多媒体教室",
+    "capacity": 60,
+    "status": "available",
+    "currentUser": ""
+  },
+  {
+    "id": "2",
+    "name": "综3105",
+    "type": "多媒体教室",
+    "capacity": 60,
+    "status": "in_use",
+    "currentUser": "23级临床12班"
+  },
+  {
+    "id": "3",
+    "name": "综3106",
+    "type": "普通教室",
+    "capacity": 80,
+    "status": "available",
+    "currentUser": ""
+  },
+  {
+    "id": "4",
+    "name": "综3107",
+    "type": "普通教室",
+    "capacity": 80,
+    "status": "maintenance",
+    "currentUser": ""
+  },
+  {
+    "id": "5",
+    "name": "综3201",
+    "type": "实验室",
+    "capacity": 40,
+    "status": "available",
+    "currentUser": ""
+  },
+  {
+    "id": "6",
+    "name": "综3202",
+    "type": "多媒体教室",
+    "capacity": 60,
+    "status": "in_use",
+    "currentUser": "24级护理6班"
+  },
+  {
+    "id": "7",
+    "name": "综3203",
+    "type": "多媒体教室",
+    "capacity": 60,
+    "status": "available",
+    "currentUser": ""
+  },
+  {
+    "id": "8",
+    "name": "报3101",
+    "type": "报告厅",
+    "capacity": 200,
+    "status": "in_use",
+    "currentUser": "学术讲座"
+  }
+]

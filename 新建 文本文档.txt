@@ -1,0 +1,2 @@
+cd C:\Users\liulon\Desktop\schedule-viewer\server
+node index.js
