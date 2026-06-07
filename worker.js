@@ -140,32 +140,30 @@ async function sendEmail(env, to, subject, body) {
   }
 }
 
-async function sendEventEmails(env, newHallData, staffList, oldHallData) {
-  console.log('[邮件] 开始检查活动，共', Object.keys(newHallData || {}).length, '个日期');
-  console.log('[邮件] 人员列表共', (staffList || []).length, '人，有邮箱的:', (staffList || []).filter(s => s.email).length);
+async function sendEventEmails(env, hallData, staffList) {
+  console.log('[邮件] 开始检查活动，共', Object.keys(hallData || {}).length, '个日期');
+  let changed = false;
   const sent = new Set();
-  for (const [date, events] of Object.entries(newHallData || {})) {
-    const oldEvents = (oldHallData && oldHallData[date]) || [];
+  for (const [date, events] of Object.entries(hallData || {})) {
     for (const evt of events) {
-      console.log('[邮件] 检查活动:', date, evt.eventName || '(空闲)', 'status:', evt.status, '联系人:', evt.contactPerson);
-      if (evt.status !== 'occupied' || !evt.contactPerson) { console.log('[邮件] 跳过:', evt.status !== 'occupied' ? '非占用' : '无联系人'); continue; }
-      const oldEvt = oldEvents.find((o) => o.id === evt.id);
-      if (oldEvt && oldEvt.status === 'occupied' && oldEvt.eventName === evt.eventName && oldEvt.timeSlot === evt.timeSlot && oldEvt.contactPerson === evt.contactPerson) {
-        console.log('[邮件] 跳过: 旧活动未变更');
-        continue;
-      }
+      if (evt.status !== 'occupied' || !evt.contactPerson) continue;
+      // 已发过邮件的跳过
+      if (evt._notified) continue;
       const staff = staffList.find((s) => s.name === evt.contactPerson);
-      console.log('[邮件] 查找人员', evt.contactPerson, '→', staff ? `找到, email=${staff.email || '(空)'}` : '未找到');
-      if (!staff || !staff.email) { console.log('[邮件] 跳过: 人员不存在或无邮箱'); continue; }
+      console.log('[邮件]', date, evt.eventName, '→', evt.contactPerson, '→', staff ? `email=${staff.email || '(空)'}` : '人员未找到');
+      if (!staff || !staff.email) continue;
       if (sent.has(staff.email + evt.id)) continue;
       sent.add(staff.email + evt.id);
       await sendEmail(env, staff.email,
         `【报告厅】活动安排通知 - ${evt.eventName}`,
         `活动名称：${evt.eventName}\n时间：${date} ${evt.timeSlot}\n地点：报告厅\n负责人：${evt.contactPerson} ${evt.contactPhone || ''}\n主办单位：${evt.organizer || '无'}\n\n此邮件由系统自动发送，请勿回复。`
       );
+      evt._notified = true;
+      changed = true;
     }
   }
-  console.log('[邮件] 检查完成，共发送', sent.size, '封');
+  console.log('[邮件] 完成，发送', sent.size, '封');
+  if (changed) await kvPut(env, 'hall', hallData); // 保存 _notified 标记
 }
 
 // ====== 主 Worker ======
@@ -211,11 +209,9 @@ export default {
         const body = await request.json();
         if (!checkPassword(env, body)) return Response.json({ error: '密码错误' }, { status: 403 });
         const hallData = body.data !== undefined ? body.data : body;
-        const oldHallData = await kvGet(env, 'hall', null);
         await kvPut(env, 'hall', hallData);
-        // 只对新活动或修改过的活动发送邮件
         const staffList = await kvGet(env, 'staff', DEFAULTS.staff);
-        sendEventEmails(env, hallData, staffList, oldHallData);
+        sendEventEmails(env, hallData, staffList);
         return Response.json({ ok: true });
       }
     }
