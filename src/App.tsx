@@ -4,6 +4,7 @@ import StaffPage from './components/StaffPage';
 import ClassroomPage from './components/ClassroomPage';
 import KeyPage from './components/KeyPage';
 import HallPage from './components/HallPage';
+import KeyLogPage from './components/KeyLogPage';
 import AdminGate from './components/AdminGate';
 import SettingsModal from './components/SettingsModal';
 import { mockStaff, mockKeyData, mockHallEvents } from './data/mock';
@@ -81,6 +82,7 @@ export default function App() {
           {activeTab === 'classroom' && <ClassroomPage keyData={keyData} />}
           {activeTab === 'keys' && <KeyPage data={keyData} />}
           {activeTab === 'hall' && <HallPage eventsByDate={hallEvents} editing={isEditing} onSave={saveHall} staffList={staff} />}
+          {activeTab === 'logs' && <KeyLogPage />}
         </main>
       </div>
 

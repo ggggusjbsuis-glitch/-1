@@ -1,6 +1,6 @@
 // 现代教育科教育管理系统 - Cloudflare Worker
 const stripHtml = (s) => (s || '').replace(/<[^>]+>/g, '').trim();
-const fmtDate = (o) => { const d = new Date(); d.setDate(d.getDate() + o); return d.toISOString().slice(0, 10); };
+const fmtDate = (o) => { const d = new Date(); d.setDate(d.getDate() + o); return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`; };
 
 // ====== 默认数据 ======
 const DEFAULTS = {
@@ -108,6 +108,31 @@ async function fetchKeysFromRemote(env) {
     await kvPut(env, 'keys', data);
     await env.SCHEDULE_KV.put('key_fetch_status', `ok_${Date.now()}`);
     console.log(`[钥匙] 更新成功: ${keyList.length} 把, ${records.length} 条记录`);
+
+    // 追加日志：对比之前见过的记录，新记录写入日志
+    const seenIds = JSON.parse(await env.SCHEDULE_KV.get('seen_record_ids') || '[]');
+    const newLogs = [];
+    for (const r of records) {
+      if (!seenIds.includes(r.id)) {
+        newLogs.push({
+          id: r.id,
+          time: r.time,
+          keyName: r.keyName,
+          userName: r.userName,
+          action: r.action === '取出' ? 'borrow' : 'return',
+          location: r.location,
+          remark: r.remark,
+        });
+        seenIds.push(r.id);
+      }
+    }
+    if (newLogs.length > 0) {
+      const existingLogs = JSON.parse(await env.SCHEDULE_KV.get('key_logs') || '[]');
+      const allLogs = [...newLogs, ...existingLogs].slice(0, 500); // 保留最新 500 条
+      await env.SCHEDULE_KV.put('key_logs', JSON.stringify(allLogs));
+      await env.SCHEDULE_KV.put('seen_record_ids', JSON.stringify(seenIds.slice(-500)));
+      console.log(`[日志] 新增 ${newLogs.length} 条，共 ${allLogs.length} 条`);
+    }
     return true;
   } catch (e) {
     console.error('[钥匙] 抓取异常:', e.message);
@@ -257,6 +282,14 @@ export default {
         const ok = await fetchKeysFromRemote(env);
         return Response.json({ ok, message: ok ? 'Cookie 已更新，抓取成功' : 'Cookie 已保存，但抓取失败（可能过期）' });
       }
+    }
+
+    // 日志
+    if (path === '/api/logs') {
+      const raw = await env.SCHEDULE_KV.get('key_logs');
+      const logs = raw ? JSON.parse(raw) : [];
+      const limit = parseInt(url.searchParams.get('limit') || '100');
+      return Response.json(logs.slice(0, limit));
     }
 
     // 手动触发抓取

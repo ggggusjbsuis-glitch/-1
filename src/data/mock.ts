@@ -26,8 +26,9 @@ export const mockClassrooms: Classroom[] = [
   { id: '8', name: '报3101', type: '报告厅', capacity: 200, status: 'in_use', currentUser: '学术讲座' },
 ];
 
-function today(): string { return new Date().toISOString().slice(0, 10); }
-function day(offset: number): string { const d = new Date(); d.setDate(d.getDate() + offset); return d.toISOString().slice(0, 10); }
+function fmt(d: Date): string { return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`; }
+function today(): string { return fmt(new Date()); }
+function day(offset: number): string { const d = new Date(); d.setDate(d.getDate() + offset); return fmt(d); }
 
 export const mockHallEvents: Record<string, HallEvent[]> = {
   [day(-2)]: [

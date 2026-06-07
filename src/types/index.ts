@@ -102,11 +102,24 @@ export interface HallEvent {
 }
 
 // ====== 导航 ======
-export type TabId = 'staff' | 'classroom' | 'keys' | 'hall';
+// ====== 日志 ======
+export interface KeyLogEntry {
+  id: string;
+  time: string;
+  keyName: string;
+  userName: string;
+  action: 'borrow' | 'return';
+  location: string;
+  remark: string;
+}
+
+// ====== 导航 ======
+export type TabId = 'staff' | 'classroom' | 'keys' | 'hall' | 'logs';
 
 export const TAB_LABELS: Record<TabId, string> = {
   staff: '人员',
   classroom: '教室',
   keys: '钥匙',
   hall: '报告厅',
+  logs: '日志',
 };

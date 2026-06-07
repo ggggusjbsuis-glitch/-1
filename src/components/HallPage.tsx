@@ -17,7 +17,7 @@ const DEFAULT_SLOTS = [
 ];
 
 function genId() { return Date.now().toString(36) + Math.random().toString(36).slice(2, 6); }
-function fmtISO(d: Date) { return d.toISOString().slice(0, 10); }
+function fmtISO(d: Date) { return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`; }
 
 export default function HallPage({ eventsByDate, editing, onSave, staffList }: Props) {
   const [data, setData] = useState<Record<string, HallEvent[]>>({});

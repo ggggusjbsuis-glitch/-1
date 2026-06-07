@@ -10,6 +10,7 @@ const items: { id: TabId; icon: string; label: string }[] = [
   { id: 'classroom', icon: '🏫', label: '教室管理' },
   { id: 'keys', icon: '🔑', label: '钥匙管理' },
   { id: 'hall', icon: '🎤', label: '报告厅' },
+  { id: 'logs', icon: '📋', label: '钥匙日志' },
 ];
 
 export default function Sidebar({ active, onChange }: Props) {
