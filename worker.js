@@ -209,7 +209,20 @@ export default {
       if (method === 'PUT') {
         const body = await request.json();
         if (!checkPassword(env, body)) return Response.json({ error: '密码错误' }, { status: 403 });
-        const hallData = body.data !== undefined ? body.data : body;
+        const rawHallData = body.data !== undefined ? body.data : body;
+        // 从已保存数据恢复 _notified 标记（前端不会带这个标记）
+        const savedHall = await kvGet(env, 'hall', null);
+        const notifMap = {};
+        if (savedHall) {
+          for (const [d, evts] of Object.entries(savedHall)) {
+            for (const e of evts) { if (e._notified) notifMap[e.id] = true; }
+          }
+        }
+        // 合并：前端数据 + 已保存的 _notified 标记
+        const hallData = {};
+        for (const [d, evts] of Object.entries(rawHallData || {})) {
+          hallData[d] = evts.map((e) => ({ ...e, _notified: notifMap[e.id] || false }));
+        }
         await kvPut(env, 'hall', hallData);
         const staffList = await kvGet(env, 'staff', DEFAULTS.staff);
         await sendEventEmails(env, hallData, staffList);
