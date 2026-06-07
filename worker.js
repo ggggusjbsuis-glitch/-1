@@ -141,18 +141,22 @@ async function sendEmail(env, to, subject, body) {
 }
 
 async function sendEventEmails(env, newHallData, staffList, oldHallData) {
+  console.log('[邮件] 开始检查活动，共', Object.keys(newHallData || {}).length, '个日期');
+  console.log('[邮件] 人员列表共', (staffList || []).length, '人，有邮箱的:', (staffList || []).filter(s => s.email).length);
   const sent = new Set();
   for (const [date, events] of Object.entries(newHallData || {})) {
     const oldEvents = (oldHallData && oldHallData[date]) || [];
     for (const evt of events) {
-      if (evt.status !== 'occupied' || !evt.contactPerson) continue;
-      // 跳过旧数据中已存在的相同活动（未修改的不重发）
+      console.log('[邮件] 检查活动:', date, evt.eventName || '(空闲)', 'status:', evt.status, '联系人:', evt.contactPerson);
+      if (evt.status !== 'occupied' || !evt.contactPerson) { console.log('[邮件] 跳过:', evt.status !== 'occupied' ? '非占用' : '无联系人'); continue; }
       const oldEvt = oldEvents.find((o) => o.id === evt.id);
       if (oldEvt && oldEvt.status === 'occupied' && oldEvt.eventName === evt.eventName && oldEvt.timeSlot === evt.timeSlot && oldEvt.contactPerson === evt.contactPerson) {
+        console.log('[邮件] 跳过: 旧活动未变更');
         continue;
       }
       const staff = staffList.find((s) => s.name === evt.contactPerson);
-      if (!staff || !staff.email) continue;
+      console.log('[邮件] 查找人员', evt.contactPerson, '→', staff ? `找到, email=${staff.email || '(空)'}` : '未找到');
+      if (!staff || !staff.email) { console.log('[邮件] 跳过: 人员不存在或无邮箱'); continue; }
       if (sent.has(staff.email + evt.id)) continue;
       sent.add(staff.email + evt.id);
       await sendEmail(env, staff.email,
@@ -161,6 +165,7 @@ async function sendEventEmails(env, newHallData, staffList, oldHallData) {
       );
     }
   }
+  console.log('[邮件] 检查完成，共发送', sent.size, '封');
 }
 
 // ====== 主 Worker ======
