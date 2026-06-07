@@ -211,7 +211,7 @@ export default {
         const hallData = body.data !== undefined ? body.data : body;
         await kvPut(env, 'hall', hallData);
         const staffList = await kvGet(env, 'staff', DEFAULTS.staff);
-        sendEventEmails(env, hallData, staffList);
+        await sendEventEmails(env, hallData, staffList);
         return Response.json({ ok: true });
       }
     }
