@@ -140,11 +140,17 @@ async function sendEmail(env, to, subject, body) {
   }
 }
 
-async function sendEventEmails(env, hallData, staffList) {
+async function sendEventEmails(env, newHallData, staffList, oldHallData) {
   const sent = new Set();
-  for (const [date, events] of Object.entries(hallData || {})) {
+  for (const [date, events] of Object.entries(newHallData || {})) {
+    const oldEvents = (oldHallData && oldHallData[date]) || [];
     for (const evt of events) {
       if (evt.status !== 'occupied' || !evt.contactPerson) continue;
+      // 跳过旧数据中已存在的相同活动（未修改的不重发）
+      const oldEvt = oldEvents.find((o) => o.id === evt.id);
+      if (oldEvt && oldEvt.status === 'occupied' && oldEvt.eventName === evt.eventName && oldEvt.timeSlot === evt.timeSlot && oldEvt.contactPerson === evt.contactPerson) {
+        continue;
+      }
       const staff = staffList.find((s) => s.name === evt.contactPerson);
       if (!staff || !staff.email) continue;
       if (sent.has(staff.email + evt.id)) continue;
@@ -200,10 +206,11 @@ export default {
         const body = await request.json();
         if (!checkPassword(env, body)) return Response.json({ error: '密码错误' }, { status: 403 });
         const hallData = body.data !== undefined ? body.data : body;
+        const oldHallData = await kvGet(env, 'hall', null);
         await kvPut(env, 'hall', hallData);
-        // 发送邮件通知
+        // 只对新活动或修改过的活动发送邮件
         const staffList = await kvGet(env, 'staff', DEFAULTS.staff);
-        sendEventEmails(env, hallData, staffList);
+        sendEventEmails(env, hallData, staffList, oldHallData);
         return Response.json({ ok: true });
       }
     }
