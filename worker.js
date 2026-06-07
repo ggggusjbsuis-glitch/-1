@@ -159,6 +159,7 @@ async function sendEventEmails(env, hallData, staffList) {
         `活动名称：${evt.eventName}\n时间：${date} ${evt.timeSlot}\n地点：报告厅\n负责人：${evt.contactPerson} ${evt.contactPhone || ''}\n主办单位：${evt.organizer || '无'}\n\n此邮件由系统自动发送，请勿回复。`
       );
       evt._notified = true;
+      await new Promise((r) => setTimeout(r, 600)); // 避免触发 Resend 限流
       changed = true;
     }
   }
