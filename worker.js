@@ -127,7 +127,7 @@ async function sendEmail(env, to, subject, body) {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        from: '现代教育科 <liulong@zmuzh.edu.cn>',
+        from: '现代教育科 <noreply@xdjyk.online>',
         to: [to],
         subject,
         text: body,
