@@ -349,10 +349,7 @@ function EditEventModal({
         <div className="p-5 space-y-4">
           <div>
             <label className="block text-xs text-gray-400 mb-1 font-medium">时间段</label>
-            <select value={timeSlot} onChange={(e) => setTimeSlot(e.target.value)} className="w-full border-[1.5px] border-gray-200 rounded-xl px-3 py-2.5 text-sm outline-none bg-white">
-              {DEFAULT_SLOTS.filter((s) => !occupiedSlots.includes(s.timeSlot)).map((s) => <option key={s.timeSlot} value={s.timeSlot}>{s.timeSlot}</option>)}
-              {DEFAULT_SLOTS.filter((s) => !occupiedSlots.includes(s.timeSlot)).length === 0 && <option value="">所有时段已满</option>}
-            </select>
+            <TimeSlotInput slot={timeSlot} occupied={occupiedSlots} onChange={setTimeSlot} />
           </div>
           <div>
             <label className="block text-xs text-gray-400 mb-1 font-medium">活动名称</label>
@@ -385,6 +382,37 @@ function EditEventModal({
           </div>
         </div>
       </div>
+    </div>
+  );
+}
+
+// ====== 时间段输入组件 ======
+function TimeSlotInput({ slot, occupied, onChange }: { slot: string; occupied: string[]; onChange: (v: string) => void }) {
+  const [custom, setCustom] = useState(slot && !DEFAULT_SLOTS.some((s) => s.timeSlot === slot));
+  const [customVal, setCustomVal] = useState(custom ? slot : '');
+  const available = DEFAULT_SLOTS.filter((s) => !occupied.includes(s.timeSlot));
+
+  const toggleCustom = () => {
+    if (custom) { setCustom(false); onChange(available[0]?.timeSlot || ''); }
+    else { setCustom(true); setCustomVal(''); }
+  };
+
+  return (
+    <div className="flex items-center gap-2">
+      {!custom ? (
+        <>
+          <select value={slot} onChange={(e) => onChange(e.target.value)} className="flex-1 border-[1.5px] border-gray-200 rounded-xl px-3 py-2.5 text-sm outline-none bg-white">
+            {available.length === 0 && <option value="">所有时段已满</option>}
+            {available.map((s) => <option key={s.timeSlot} value={s.timeSlot}>{s.timeSlot}</option>)}
+          </select>
+          <button type="button" onClick={toggleCustom} className="shrink-0 w-9 h-9 border-[1.5px] border-dashed border-gray-300 rounded-xl text-gray-400 hover:text-blue-600 hover:border-blue-300 flex items-center justify-center text-lg font-medium transition-colors">+</button>
+        </>
+      ) : (
+        <>
+          <input value={customVal} onChange={(e) => { setCustomVal(e.target.value); onChange(e.target.value); }} placeholder="自定义时间段，如 08:30-10:00" className="flex-1 border-[1.5px] border-gray-200 rounded-xl px-3 py-2.5 text-sm outline-none focus:border-blue-500 transition-all" />
+          <button type="button" onClick={toggleCustom} className="shrink-0 text-xs text-gray-400 hover:text-gray-600">预设</button>
+        </>
+      )}
     </div>
   );
 }
