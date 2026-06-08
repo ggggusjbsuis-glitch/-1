@@ -64,15 +64,10 @@ export default function HallPage({ eventsByDate, editing, onSave, staffList }: P
     onSave(next);
   };
 
-  // 点击日期：编辑模式打开编辑弹窗，查看模式选中并显示详情
+  // 点击日期：统一弹出当日活动概览
   const handleDateClick = (ds: string) => {
     setSelectedDate(ds);
-    if (editing) {
-      setEditDate(ds);
-      setEditEvent(null);
-    } else {
-      setShowDetail(true);
-    }
+    setShowDetail(true);
   };
 
   // 点击活动条目：编辑模式打开编辑，查看模式显示详情
@@ -236,7 +231,7 @@ export default function HallPage({ eventsByDate, editing, onSave, staffList }: P
       </div>
 
       {/* 查看模式：日期详情弹窗（桌面端点击日期时） */}
-      {showDetail && !editing && (
+      {showDetail && (
         <div className="fixed inset-0 z-[200] flex items-center justify-center bg-black/40 backdrop-blur-sm" onClick={() => setShowDetail(false)}>
           <div className="bg-white rounded-2xl mx-4 w-full max-w-sm shadow-2xl overflow-hidden max-h-[80vh] flex flex-col" onClick={(e) => e.stopPropagation()}>
             <div className="p-5 border-b border-gray-100 flex items-center justify-between">
@@ -252,11 +247,24 @@ export default function HallPage({ eventsByDate, editing, onSave, staffList }: P
                   <div className="text-xs font-semibold text-blue-600 mb-1.5">{e.timeSlot}</div>
                   <div className={`rounded-2xl p-4 border ${e.status === 'free' ? 'bg-emerald-50 border-emerald-200' : 'bg-gray-50 border-gray-100'}`}>
                     {e.status === 'free' ? (
-                      <div className="font-semibold text-[15px] text-emerald-600">○ 空闲</div>
+                      <div className="flex items-center justify-between">
+                        <div className="font-semibold text-[15px] text-emerald-600">○ 空闲</div>
+                        {editing && (
+                          <button onClick={() => { setEditEvent({ ...e, date: selectedDate, id: genId() }); setEditDate(selectedDate); setShowDetail(false); }} className="text-[10px] bg-emerald-100 text-emerald-700 px-2.5 py-1 rounded-lg font-medium">+ 添加</button>
+                        )}
+                      </div>
                     ) : (
                       <>
-                        <div className="font-semibold text-[15px] text-gray-900">{e.eventName}</div>
-                        <div className="text-[13px] text-gray-400 mt-2 flex flex-col gap-1">
+                        <div className="flex items-center justify-between mb-1">
+                          <div className="font-semibold text-[15px] text-gray-900">{e.eventName}</div>
+                          {editing && (
+                            <div className="flex gap-1 shrink-0 ml-2">
+                              <button onClick={() => { setEditEvent(e); setEditDate(e.date); setShowDetail(false); }} className="text-[10px] bg-blue-50 text-blue-600 px-2 py-0.5 rounded">编辑</button>
+                              <button onClick={() => handleDelete(e)} className="text-[10px] bg-red-50 text-red-600 px-2 py-0.5 rounded">删除</button>
+                            </div>
+                          )}
+                        </div>
+                        <div className="text-[13px] text-gray-400 flex flex-col gap-1">
                           <span>🏛 {e.organizer}</span>
                           <span>👤 {e.contactPerson}</span>
                           <span>📞 {e.contactPhone}</span>
@@ -267,6 +275,13 @@ export default function HallPage({ eventsByDate, editing, onSave, staffList }: P
                 </div>
               ))}
             </div>
+            {editing && (
+              <div className="p-5 border-t border-gray-100">
+                <button onClick={() => { setEditEvent(null); setEditDate(selectedDate); setShowDetail(false); }} className="w-full py-2.5 text-sm font-semibold bg-blue-600 text-white rounded-xl hover:bg-blue-700 transition-all">
+                  + 添加新活动
+                </button>
+              </div>
+            )}
           </div>
         </div>
       )}
