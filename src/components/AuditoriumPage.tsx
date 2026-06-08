@@ -302,7 +302,7 @@ export default function HallPage({ eventsByDate, editing, onSave, staffList }: P
   );
 }
 
-// ====== 编辑弹窗 ======
+// ====== 编辑弹窗（支持多负责人） ======
 function EditEventModal({
   event, date, staffList, occupiedSlots, onSave, onClose,
 }: {
@@ -310,20 +310,39 @@ function EditEventModal({
   occupiedSlots: string[];
   onSave: (e: HallEvent) => void; onClose: () => void;
 }) {
+  const initContacts: { name: string; phone: string }[] = event?.contactPerson
+    ? event.contactPerson.split(/[,，、]/).map((n, i) => ({
+        name: n.trim(),
+        phone: (event.contactPhone || '').split(/[,，、]/)[i]?.trim() || '',
+      })).filter(c => c.name)
+    : [{ name: '', phone: '' }];
+
   const [timeSlot, setTimeSlot] = useState(event?.timeSlot || '08:00-10:00');
   const [eventName, setEventName] = useState(event?.eventName || '');
   const [organizer, setOrganizer] = useState(event?.organizer || '');
-  const [contactPerson, setContactPerson] = useState(event?.contactPerson || '');
-  const [contactPhone, setContactPhone] = useState(event?.contactPhone || '');
+  const [contacts, setContacts] = useState<{ name: string; phone: string }[]>(initContacts);
 
-  const selectStaff = (name: string) => {
+  const updateContact = (i: number, name: string, phone: string) => {
+    setContacts(prev => { const next = [...prev]; next[i] = { name, phone }; return next; });
+  };
+  const addContact = () => setContacts(prev => [...prev, { name: '', phone: '' }]);
+  const removeContact = (i: number) => setContacts(prev => prev.length > 1 ? prev.filter((_, idx) => idx !== i) : [{ name: '', phone: '' }]);
+
+  const selectStaff = (name: string, i: number) => {
     const s = staffList.find((p) => p.name === name);
-    if (s) { setContactPerson(s.name); setContactPhone(s.phone); }
+    if (s) updateContact(i, s.name, s.phone);
   };
 
   const save = () => {
     if (!eventName.trim()) return;
-    onSave({ id: event?.id || genId(), date, timeSlot, eventName: eventName.trim(), organizer: organizer.trim(), contactPerson: contactPerson.trim(), contactPhone: contactPhone.trim(), status: 'occupied' });
+    const valid = contacts.filter(c => c.name.trim());
+    onSave({
+      id: event?.id || genId(), date, timeSlot,
+      eventName: eventName.trim(), organizer: organizer.trim(),
+      contactPerson: valid.map(c => c.name).join('、'),
+      contactPhone: valid.map(c => c.phone).join('、'),
+      status: 'occupied',
+    });
     onClose();
   };
 
@@ -355,19 +374,47 @@ function EditEventModal({
             <label className="block text-xs text-gray-400 mb-1 font-medium">主办单位</label>
             <input value={organizer} onChange={(e) => setOrganizer(e.target.value)} placeholder="计算机学院" className="w-full border-[1.5px] border-gray-200 rounded-xl px-3 py-2.5 text-sm outline-none focus:border-blue-500 transition-all" />
           </div>
+
+          {/* 多负责人 */}
           <div>
-            <label className="block text-xs text-gray-400 mb-1 font-medium">负责人</label>
-            {staffList.length > 0 && (
-              <select value={contactPerson} onChange={(e) => selectStaff(e.target.value)} className="w-full border-[1.5px] border-gray-200 rounded-xl px-3 py-2.5 text-sm outline-none bg-white mb-2">
-                <option value="">从人员列表选择...</option>
-                {staffList.map((s) => <option key={s.id} value={s.name}>{s.name} — {s.phone}</option>)}
-              </select>
-            )}
-            <input value={contactPerson} onChange={(e) => setContactPerson(e.target.value)} placeholder="负责人姓名" className="w-full border-[1.5px] border-gray-200 rounded-xl px-3 py-2.5 text-sm outline-none focus:border-blue-500 transition-all" />
-          </div>
-          <div>
-            <label className="block text-xs text-gray-400 mb-1 font-medium">联系电话</label>
-            <input value={contactPhone} onChange={(e) => setContactPhone(e.target.value)} placeholder="13800001111" className="w-full border-[1.5px] border-gray-200 rounded-xl px-3 py-2.5 text-sm outline-none focus:border-blue-500 transition-all" />
+            <div className="flex items-center justify-between mb-2">
+              <label className="text-xs text-gray-400 font-medium">负责人</label>
+              <button onClick={addContact} className="text-xs text-blue-600 hover:text-blue-800 font-medium flex items-center gap-0.5">
+                <span className="text-base leading-none">+</span> 添加负责人
+              </button>
+            </div>
+            <div className="space-y-2">
+              {contacts.map((c, i) => (
+                <div key={i} className="flex items-center gap-2">
+                  <div className="flex-1">
+                    {staffList.length > 0 ? (
+                      <select
+                        value={c.name}
+                        onChange={(e) => selectStaff(e.target.value, i)}
+                        className="w-full border-[1.5px] border-gray-200 rounded-xl px-3 py-2 text-sm outline-none bg-white"
+                      >
+                        <option value="">选择人员...</option>
+                        {staffList.map((s) => <option key={s.id} value={s.name}>{s.name} — {s.phone}</option>)}
+                      </select>
+                    ) : (
+                      <input
+                        value={c.name}
+                        onChange={(e) => updateContact(i, e.target.value, c.phone)}
+                        placeholder="姓名"
+                        className="w-full border-[1.5px] border-gray-200 rounded-xl px-3 py-2 text-sm outline-none focus:border-blue-500 transition-all"
+                      />
+                    )}
+                  </div>
+                  <input
+                    value={c.phone}
+                    onChange={(e) => updateContact(i, c.name, e.target.value)}
+                    placeholder="电话"
+                    className="w-28 border-[1.5px] border-gray-200 rounded-xl px-3 py-2 text-sm outline-none focus:border-blue-500 transition-all"
+                  />
+                  <button onClick={() => removeContact(i)} className="text-gray-300 hover:text-red-400 text-lg leading-none shrink-0">&times;</button>
+                </div>
+              ))}
+            </div>
           </div>
         </div>
         <div className="p-5 border-t border-gray-100 flex justify-between sticky bottom-0 bg-white">
