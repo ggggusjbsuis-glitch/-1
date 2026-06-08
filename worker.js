@@ -386,52 +386,72 @@ export default {
       const hallData = await kvGet(env, 'hall', null);
       const today = fmtDate(0);
 
-      // 配对 报3101 使用记录
-      const k3101 = records.filter((r) => r.keyName === '报3101').sort((a, b) => a.time.localeCompare(b.time));
-      const stack = [];
-      const pairs = [];
-      for (const r of k3101) {
-        if (r.action === '取出') { stack.push(r); }
-        else if (r.action === '归还' && stack.length > 0) {
-          const borrow = stack.shift();
-          const dur = Math.round((new Date(r.time) - new Date(borrow.time)) / 60000); // 分钟
-          pairs.push({ borrowTime: borrow.time, returnTime: r.time, duration: dur, borrower: r.userName });
+      // 通用配对函数
+      function pairRecords(recs) {
+        const sorted = [...recs].sort((a, b) => a.time.localeCompare(b.time));
+        const stack = [];
+        const pairs = [];
+        for (const r of sorted) {
+          const act = r.action === 'borrow' ? 'borrow' : r.action === 'return' ? 'return' : r.action === '取出' ? 'borrow' : r.action === '归还' ? 'return' : null;
+          if (act === 'borrow') stack.push(r);
+          else if (act === 'return' && stack.length > 0) {
+            const borrow = stack.shift();
+            const dur = Math.round((new Date(r.time) - new Date(borrow.time)) / 60000);
+            pairs.push({ keyName: r.keyName, borrowTime: borrow.time, returnTime: r.time, duration: dur, borrower: r.userName, date: borrow.time.slice(0, 10) });
+          }
         }
+        return pairs;
       }
 
-      // 匹配大礼堂/报告厅活动
-      for (const p of pairs) {
-        const borrowHour = new Date(p.borrowTime).getHours();
-        // 查找当天的活动
-        const todayAud = (auditoriumData && auditoriumData[today]) || [];
-        const todayHall = (hallData && hallData[today]) || [];
-        const allEvents = [...todayAud, ...todayHall].filter((e) => e.status === 'occupied');
-        const match = allEvents.find((e) => {
-          const [startH] = e.timeSlot.split('-').map((t) => parseInt(t.split(':')[0]));
-          return Math.abs(borrowHour - startH) <= 2; // 2 小时内算匹配
-        });
-        if (match) {
-          p.eventName = match.eventName;
-          p.organizer = match.organizer;
-          p.contactPerson = match.contactPerson;
+      // 今天的 Gantt 数据（所有钥匙）
+      const todayPairs = pairRecords(records);
+      const ganttMap = {};
+      for (const p of todayPairs) {
+        if (!ganttMap[p.keyName]) ganttMap[p.keyName] = [];
+        ganttMap[p.keyName].push({ borrowTime: p.borrowTime, returnTime: p.returnTime, duration: p.duration, borrower: p.borrower });
+      }
+      const ganttKeys = Object.entries(ganttMap).map(([keyName, sessions]) => ({ keyName, sessions }));
+
+      // 钥匙时长排行
+      const durMap = {};
+      for (const p of todayPairs) {
+        durMap[p.keyName] = (durMap[p.keyName] || 0) + p.duration;
+      }
+      const keyDurations = Object.entries(durMap).map(([keyName, totalDuration]) => ({ keyName, totalDuration })).sort((a, b) => b.totalDuration - a.totalDuration);
+
+      // 本周 3101 数据
+      const now = new Date();
+      const dow = now.getDay();
+      const monday = new Date(now); monday.setDate(now.getDate() - (dow === 0 ? 6 : dow - 1)); monday.setHours(0,0,0,0);
+      const sunday = new Date(monday); sunday.setDate(monday.getDate() + 6); sunday.setHours(23,59,59,999);
+      const mondayStr = `${monday.getFullYear()}-${String(monday.getMonth()+1).padStart(2,'0')}-${String(monday.getDate()).padStart(2,'0')}`;
+      const sundayStr = `${sunday.getFullYear()}-${String(sunday.getMonth()+1).padStart(2,'0')}-${String(sunday.getDate()).padStart(2,'0')}`;
+
+      const logsRaw = await env.SCHEDULE_KV.get('key_logs');
+      const logs = logsRaw ? JSON.parse(logsRaw) : [];
+      const weekLogs = logs.filter((l) => l.keyName === '报3101' && l.time >= mondayStr + ' 00:00:00' && l.time <= sundayStr + ' 23:59:59');
+      const weekPairs = pairRecords(weekLogs);
+
+      // 按日期分组
+      const weekly3101 = [];
+      const dateSet = [...new Set(weekPairs.map((p) => p.date))].sort();
+      for (const d of dateSet) {
+        const dayPairs = weekPairs.filter((p) => p.date === d);
+        // 匹配活动
+        for (const p of dayPairs) {
+          const h = parseInt(p.borrowTime.slice(11, 13));
+          const dayAud = (auditoriumData && auditoriumData[d]) || [];
+          const dayHall = (hallData && hallData[d]) || [];
+          const match = [...dayAud, ...dayHall].filter((e) => e.status === 'occupied').find((e) => {
+            const [sh] = e.timeSlot.split('-').map((t) => parseInt(t.split(':')[0]));
+            return Math.abs(h - sh) <= 2;
+          });
+          if (match) { p.eventName = match.eventName; p.organizer = match.organizer; }
         }
+        weekly3101.push({ date: d, pairs: dayPairs, totalDuration: dayPairs.reduce((s, p) => s + p.duration, 0) });
       }
 
-      // 全部钥匙统计
-      const keyStats = {};
-      for (const r of records) {
-        if (!keyStats[r.keyName]) keyStats[r.keyName] = { keyName: r.keyName, borrowCount: 0, returnCount: 0 };
-        if (r.action === '取出') keyStats[r.keyName].borrowCount++;
-        else keyStats[r.keyName].returnCount++;
-      }
-
-      return Response.json({
-        key3101: {
-          totalBorrows: k3101.filter((r) => r.action === '取出').length,
-          pairs,
-        },
-        allKeys: Object.values(keyStats).sort((a, b) => b.borrowCount - a.borrowCount),
-      });
+      return Response.json({ ganttKeys, weekly3101, keyDurations });
     }
 
     // 手动触发抓取
