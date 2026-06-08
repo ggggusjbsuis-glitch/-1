@@ -350,7 +350,8 @@ export default {
 
     // 用户电话簿
     if (path === '/api/users') {
-      const raw = await env.SCHEDULE_KV.get('user_phones');
+      let raw = await env.SCHEDULE_KV.get('user_phones');
+      if (!raw) { await fetchUsers(env); raw = await env.SCHEDULE_KV.get('user_phones'); }
       return Response.json(raw ? JSON.parse(raw) : {});
     }
 
