@@ -316,6 +316,62 @@ export default {
       return Response.json(logs.slice(0, limit));
     }
 
+    // 数据看板统计
+    if (path === '/api/stats') {
+      const keyData = await kvGet(env, 'keys', null);
+      const records = (keyData && keyData.todayRecords) || [];
+      const auditoriumData = await kvGet(env, 'auditorium', null);
+      const hallData = await kvGet(env, 'hall', null);
+      const today = fmtDate(0);
+
+      // 配对 报3101 使用记录
+      const k3101 = records.filter((r) => r.keyName === '报3101').sort((a, b) => a.time.localeCompare(b.time));
+      const stack = [];
+      const pairs = [];
+      for (const r of k3101) {
+        if (r.action === '取出') { stack.push(r); }
+        else if (r.action === '归还' && stack.length > 0) {
+          const borrow = stack.shift();
+          const dur = Math.round((new Date(r.time) - new Date(borrow.time)) / 60000); // 分钟
+          pairs.push({ borrowTime: borrow.time, returnTime: r.time, duration: dur, borrower: r.userName });
+        }
+      }
+
+      // 匹配大礼堂/报告厅活动
+      for (const p of pairs) {
+        const borrowHour = new Date(p.borrowTime).getHours();
+        // 查找当天的活动
+        const todayAud = (auditoriumData && auditoriumData[today]) || [];
+        const todayHall = (hallData && hallData[today]) || [];
+        const allEvents = [...todayAud, ...todayHall].filter((e) => e.status === 'occupied');
+        const match = allEvents.find((e) => {
+          const [startH] = e.timeSlot.split('-').map((t) => parseInt(t.split(':')[0]));
+          return Math.abs(borrowHour - startH) <= 2; // 2 小时内算匹配
+        });
+        if (match) {
+          p.eventName = match.eventName;
+          p.organizer = match.organizer;
+          p.contactPerson = match.contactPerson;
+        }
+      }
+
+      // 全部钥匙统计
+      const keyStats = {};
+      for (const r of records) {
+        if (!keyStats[r.keyName]) keyStats[r.keyName] = { keyName: r.keyName, borrowCount: 0, returnCount: 0 };
+        if (r.action === '取出') keyStats[r.keyName].borrowCount++;
+        else keyStats[r.keyName].returnCount++;
+      }
+
+      return Response.json({
+        key3101: {
+          totalBorrows: k3101.filter((r) => r.action === '取出').length,
+          pairs,
+        },
+        allKeys: Object.values(keyStats).sort((a, b) => b.borrowCount - a.borrowCount),
+      });
+    }
+
     // 手动触发抓取
     if (path === '/api/fetch-keys') {
       const body = method === 'POST' ? await request.json().catch(() => ({})) : {};

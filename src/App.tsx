@@ -6,6 +6,7 @@ import KeyPage from './components/KeyPage';
 import HallPage from './components/HallPage';
 import AuditoriumPage from './components/AuditoriumPage';
 import KeyLogPage from './components/KeyLogPage';
+import DashboardPage from './components/DashboardPage';
 import AdminGate from './components/AdminGate';
 import SettingsModal from './components/SettingsModal';
 import { mockStaff, mockKeyData, mockHallEvents } from './data/mock';
@@ -80,7 +81,7 @@ export default function App() {
       </header>
 
       <div className="flex flex-col md:flex-row">
-        <Sidebar active={activeTab} onChange={setActiveTab} />
+        <Sidebar active={activeTab} onChange={setActiveTab} isEditing={isEditing} />
         <main className="flex-1 p-6 max-w-[1100px] min-w-0">
           {activeTab === 'staff' && <StaffPage data={staff} editing={isEditing} onSave={saveStaff} />}
           {activeTab === 'classroom' && <ClassroomPage keyData={keyData} />}
@@ -88,6 +89,7 @@ export default function App() {
           {activeTab === 'hall' && <HallPage eventsByDate={hallEvents} editing={isEditing} onSave={saveHall} staffList={staff} />}
           {activeTab === 'auditorium' && <AuditoriumPage eventsByDate={audEvents} editing={isEditing} onSave={saveAuditorium} staffList={staff} />}
           {activeTab === 'logs' && <KeyLogPage />}
+          {activeTab === 'dashboard' && <DashboardPage />}
         </main>
       </div>
 
