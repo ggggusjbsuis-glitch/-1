@@ -8,10 +8,8 @@ interface KeyDur { keyName: string; totalDuration: number; }
 interface Stats { ganttKeys: GanttKey[]; weekly3101: WeeklyDay[]; keyDurations: KeyDur[]; }
 
 function fmtDur(m: number): string { return m < 60 ? `${m}min` : `${Math.floor(m/60)}h${m%60}min`; }
-function timeToX(t: string): number { return parseInt(t.slice(11,13)) + parseInt(t.slice(14,16))/60; }
 const BAR_COLORS = ['#2563eb','#3b82f6','#60a5fa','#93c5fd','#bfdbfe','#2563eb','#3b82f6','#60a5fa','#93c5fd','#bfdbfe','#2563eb','#3b82f6','#60a5fa','#93c5fd','#bfdbfe'];
 const WEEKDAYS = ['周日','周一','周二','周三','周四','周五','周六'];
-const LEFT_PAD = 55;
 
 export default function DashboardPage() {
   const [stats, setStats] = useState<Stats | null>(null);
@@ -27,35 +25,6 @@ export default function DashboardPage() {
     <>
       <h2 className="text-[22px] font-bold text-gray-900 mb-1 tracking-[-.3px]">数据看板</h2>
       <p className="text-[13px] text-gray-400 mb-6">今日钥匙使用时长统计 · 累计 {fmtDur(totalTodayMin)}</p>
-
-      <div className="bg-white rounded-2xl p-5 shadow-sm border border-gray-100 mb-6">
-        <h3 className="text-sm font-bold text-gray-700 mb-4">📊 今日钥匙使用时间轴</h3>
-        {ganttKeys.length === 0 ? <div className="text-gray-300 text-center py-8 text-sm">今日暂无使用记录</div> : (
-          <div className="overflow-x-auto">
-            <div className="relative" style={{ minWidth: 500, paddingLeft: LEFT_PAD, paddingRight: 10 }}>
-              <div className="flex justify-between text-[10px] text-gray-400 mb-1">
-                {Array.from({length:15},(_,i)=>i+8).map(h=><span key={h}>{h}:00</span>)}
-              </div>
-              {ganttKeys.slice(0, 20).map((gk) => {
-                const keyRows = gk.sessions.map((s, si) => {
-                  const l = ((timeToX(s.borrowTime)-8)/14)*100;
-                  const w = Math.max((s.duration/60/14)*100, 1);
-                  return <div key={si} className="absolute rounded-md flex items-center text-[9px] text-white font-semibold px-1 truncate hover:opacity-80 transition-opacity"
-                    style={{ left: `${l}%`, width: `${w}%`, top: 1, height: 16, background: s.duration > 120 ? 'linear-gradient(90deg,#ef4444,#f87171)' : s.duration > 60 ? 'linear-gradient(90deg,#f59e0b,#fbbf24)' : 'linear-gradient(90deg,#2563eb,#60a5fa)' }}
-                    title={`${s.borrowTime.slice(11)}-${s.returnTime.slice(11)} ${s.borrower} ${fmtDur(s.duration)}`}
-                  >{s.duration >= 20 ? fmtDur(s.duration) : ''}</div>;
-                });
-                return (
-                  <div key={gk.keyName} className="flex items-center mb-1.5" style={{ height: 24, marginLeft: -LEFT_PAD }}>
-                    <div className="text-[11px] font-semibold text-gray-600 text-right pr-2 shrink-0" style={{ width: LEFT_PAD - 5 }}>{gk.keyName}</div>
-                    <div className="flex-1 relative" style={{ height: 18 }}>{keyRows}</div>
-                  </div>
-                );
-              })}
-            </div>
-          </div>
-        )}
-      </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
         <div className="bg-white rounded-2xl p-5 shadow-sm border border-gray-100">

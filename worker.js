@@ -416,6 +416,22 @@ export default {
       }
       const ganttKeys = Object.entries(ganttMap).map(([keyName, sessions]) => ({ keyName, sessions }));
 
+      // 匹配 3101 活动
+      for (const gk of ganttKeys) {
+        if (gk.keyName !== '报3101') continue;
+        for (const s of gk.sessions) {
+          const d = s.borrowTime.slice(0, 10);
+          const h = parseInt(s.borrowTime.slice(11, 13));
+          const dayAud = (auditoriumData && auditoriumData[d]) || [];
+          const dayHall = (hallData && hallData[d]) || [];
+          const match = [...dayAud, ...dayHall].filter((e) => e.status === 'occupied').find((e) => {
+            const [sh] = e.timeSlot.split('-').map((t) => parseInt(t.split(':')[0]));
+            return Math.abs(h - sh) <= 2;
+          });
+          if (match) { s.eventName = match.eventName; s.organizer = match.organizer; }
+        }
+      }
+
       // 钥匙时长排行
       const durMap = {};
       for (const p of todayPairs) {
