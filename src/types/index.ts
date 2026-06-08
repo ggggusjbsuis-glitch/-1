@@ -114,12 +114,13 @@ export interface KeyLogEntry {
 }
 
 // ====== 导航 ======
-export type TabId = 'staff' | 'classroom' | 'keys' | 'hall' | 'logs';
+export type TabId = 'staff' | 'classroom' | 'keys' | 'hall' | 'auditorium' | 'logs';
 
 export const TAB_LABELS: Record<TabId, string> = {
   staff: '人员',
   classroom: '教室',
   keys: '钥匙',
   hall: '报告厅',
+  auditorium: '大礼堂',
   logs: '日志',
 };

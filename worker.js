@@ -26,6 +26,13 @@ const DEFAULTS = {
     ],
   }),
   schedule: { title:'课程表', days:{ monday:[], tuesday:[], wednesday:[], thursday:[], friday:[] } },
+  auditorium: () => ({
+    [fmtDate(0)]: [
+      { id:'a1', date:fmtDate(0), timeSlot:'08:00-10:00', eventName:'', organizer:'', contactPerson:'', contactPhone:'', status:'free' },
+      { id:'b1', date:fmtDate(0), timeSlot:'10:00-12:00', eventName:'', organizer:'', contactPerson:'', contactPhone:'', status:'free' },
+      { id:'c1', date:fmtDate(0), timeSlot:'14:00-16:00', eventName:'', organizer:'', contactPerson:'', contactPhone:'', status:'free' },
+    ],
+  }),
 };
 
 // ====== KV 读写辅助 ======
@@ -251,6 +258,23 @@ export default {
         await kvPut(env, 'hall', hallData);
         const staffList = await kvGet(env, 'staff', DEFAULTS.staff);
         await sendEventEmails(env, hallData, staffList);
+        return Response.json({ ok: true });
+      }
+    }
+
+    // 大礼堂
+    if (path === '/api/auditorium') {
+      if (method === 'GET') {
+        const data = await kvGet(env, 'auditorium', DEFAULTS.auditorium);
+        return Response.json(data);
+      }
+      if (method === 'PUT') {
+        const body = await request.json();
+        if (!checkPassword(env, body)) return Response.json({ error: '密码错误' }, { status: 403 });
+        const audData = body.data !== undefined ? body.data : body;
+        await kvPut(env, 'auditorium', audData);
+        const staffList = await kvGet(env, 'staff', DEFAULTS.staff);
+        sendEventEmails(env, audData, staffList);
         return Response.json({ ok: true });
       }
     }

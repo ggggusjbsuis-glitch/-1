@@ -4,6 +4,7 @@ import StaffPage from './components/StaffPage';
 import ClassroomPage from './components/ClassroomPage';
 import KeyPage from './components/KeyPage';
 import HallPage from './components/HallPage';
+import AuditoriumPage from './components/AuditoriumPage';
 import KeyLogPage from './components/KeyLogPage';
 import AdminGate from './components/AdminGate';
 import SettingsModal from './components/SettingsModal';
@@ -24,6 +25,7 @@ export default function App() {
   const [staff, setStaff] = useState<Staff[]>(mockStaff);
   const [keyData, setKeyData] = useState<KeyData | null>(mockKeyData);
   const [hallEvents, setHallEvents] = useState<Record<string, HallEvent[]>>(mockHallEvents);
+  const [audEvents, setAudEvents] = useState<Record<string, HallEvent[]>>({});
   const [isEditing, setIsEditing] = useState(false);
   const [showGate, setShowGate] = useState(false);
   const [showSettings, setShowSettings] = useState(false);
@@ -32,6 +34,7 @@ export default function App() {
     (async () => {
       const s = await api<Staff[]>('GET', '/api/staff'); if (s) setStaff(s);
       const h = await api<Record<string, HallEvent[]>>('GET', '/api/hall'); if (h) setHallEvents(h);
+      const a = await api<Record<string, HallEvent[]>>('GET', '/api/auditorium'); if (a) setAudEvents(a);
     })();
   }, []);
 
@@ -44,6 +47,7 @@ export default function App() {
 
   const saveStaff = async (list: Staff[]) => { setStaff(list); await api('PUT', '/api/staff', { password: 'admin123', data: list }); };
   const saveHall = async (data: Record<string, HallEvent[]>) => { setHallEvents(data); await api('PUT', '/api/hall', { password: 'admin123', data }); };
+  const saveAuditorium = async (data: Record<string, HallEvent[]>) => { setAudEvents(data); await api('PUT', '/api/auditorium', { password: 'admin123', data }); };
 
   const [timeStr, setTimeStr] = useState('');
   useEffect(() => {
@@ -82,6 +86,7 @@ export default function App() {
           {activeTab === 'classroom' && <ClassroomPage keyData={keyData} />}
           {activeTab === 'keys' && <KeyPage data={keyData} />}
           {activeTab === 'hall' && <HallPage eventsByDate={hallEvents} editing={isEditing} onSave={saveHall} staffList={staff} />}
+          {activeTab === 'auditorium' && <AuditoriumPage eventsByDate={audEvents} editing={isEditing} onSave={saveAuditorium} staffList={staff} />}
           {activeTab === 'logs' && <KeyLogPage />}
         </main>
       </div>
