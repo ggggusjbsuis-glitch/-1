@@ -276,6 +276,7 @@ export default function HallPage({ eventsByDate, editing, onSave, staffList }: P
           event={editEvent}
           date={editDate}
           staffList={staffList}
+          occupiedSlots={selEvents.filter(e => e.status === 'occupied' && e.id !== editEvent?.id).map(e => e.timeSlot)}
           onSave={handleSave}
           onClose={() => { setEditEvent(null); setEditDate(''); }}
         />
@@ -286,9 +287,10 @@ export default function HallPage({ eventsByDate, editing, onSave, staffList }: P
 
 // ====== 编辑弹窗（不变） ======
 function EditEventModal({
-  event, date, staffList, onSave, onClose,
+  event, date, staffList, occupiedSlots, onSave, onClose,
 }: {
   event: HallEvent | null; date: string; staffList: Staff[];
+  occupiedSlots: string[];
   onSave: (e: HallEvent) => void; onClose: () => void;
 }) {
   const [timeSlot, setTimeSlot] = useState(event?.timeSlot || '08:00-10:00');
@@ -324,7 +326,8 @@ function EditEventModal({
           <div>
             <label className="block text-xs text-gray-400 mb-1 font-medium">时间段</label>
             <select value={timeSlot} onChange={(e) => setTimeSlot(e.target.value)} className="w-full border-[1.5px] border-gray-200 rounded-xl px-3 py-2.5 text-sm outline-none bg-white">
-              {DEFAULT_SLOTS.map((s) => <option key={s.timeSlot} value={s.timeSlot}>{s.timeSlot}</option>)}
+              {DEFAULT_SLOTS.filter((s) => !occupiedSlots.includes(s.timeSlot)).map((s) => <option key={s.timeSlot} value={s.timeSlot}>{s.timeSlot}</option>)}
+              {DEFAULT_SLOTS.filter((s) => !occupiedSlots.includes(s.timeSlot)).length === 0 && <option value="">所有时段已满</option>}
             </select>
           </div>
           <div>
