@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import type { KeyLogEntry } from '../types';
+import UserName from './UserName';
 
 export default function KeyLogPage() {
   const [logs, setLogs] = useState<KeyLogEntry[]>([]);
@@ -70,7 +71,7 @@ export default function KeyLogPage() {
                   <span className="font-semibold text-sm text-gray-900">{l.keyName}</span>
                   {isFresh && <span className="text-[10px] bg-blue-100 text-blue-600 px-1.5 py-0.5 rounded-full">新</span>}
                 </div>
-                <div className="text-xs text-gray-400 mt-2">{l.userName} · {l.location} · {l.remark}</div>
+                <div className="text-xs text-gray-400 mt-2"><UserName name={l.userName} /> · {l.location} · {l.remark}</div>
               </div>
             </div>
           );
@@ -99,7 +100,7 @@ export default function KeyLogPage() {
                   </span>
                 </td>
                 <td className="px-[18px] py-3.5 text-sm font-semibold border-b border-gray-50">{l.keyName}</td>
-                <td className="px-[18px] py-3.5 text-sm border-b border-gray-50">{l.userName}</td>
+                <td className="px-[18px] py-3.5 text-sm border-b border-gray-50"><UserName name={l.userName} /></td>
                 <td className="px-[18px] py-3.5 text-xs text-gray-400 border-b border-gray-50">{l.location}</td>
                 <td className="px-[18px] py-3.5 text-xs text-gray-400 border-b border-gray-50">{l.remark}</td>
               </tr>

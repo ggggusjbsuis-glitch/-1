@@ -140,6 +140,9 @@ async function fetchKeysFromRemote(env) {
       await env.SCHEDULE_KV.put('seen_record_ids', JSON.stringify(seenIds.slice(-500)));
       console.log(`[日志] 新增 ${newLogs.length} 条，共 ${allLogs.length} 条`);
     }
+
+    // 同步刷新用户列表
+    await fetchUsers(env);
     return true;
   } catch (e) {
     console.error('[钥匙] 抓取异常:', e.message);
@@ -197,6 +200,43 @@ async function sendEventEmails(env, hallData, staffList) {
   }
   console.log('[邮件] 完成，发送', sent.size, '封');
   if (changed) await kvPut(env, 'hall', hallData); // 保存 _notified 标记
+}
+
+// ====== 用户列表抓取 ======
+async function fetchUsers(env) {
+  let cookie = await env.SCHEDULE_KV.get('key_system_cookie');
+  if (!cookie) cookie = env.KEY_COOKIE;
+  if (!cookie) return;
+  try {
+    const params = new URLSearchParams();
+    params.append('_DONOT_USE_VMNAME', 'CoreKey.ViewModel.Users.FrameworkUserVMs.FrameworkUserListVM, CoreKey.ViewModel');
+    params.append('_DONOT_USE_CS', 'default');
+    params.append('SearcherMode', '0');
+    params.append('Page', '1');
+    params.append('Limit', '5000');
+    const res = await fetch('https://key2020.qianmingyun.com/Users/FrameworkUser/Search', {
+      method: 'POST',
+      headers: {
+        Cookie: cookie,
+        'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
+        'X-Requested-With': 'XMLHttpRequest',
+        Referer: 'https://key2020.qianmingyun.com/',
+      },
+      body: params.toString(),
+    });
+    const text = await res.text();
+    const json = JSON.parse(text);
+    if (json.Code === 200 && json.Data) {
+      const map = {};
+      for (const u of json.Data) {
+        const name = (u.Name || '').trim();
+        const phone = (u.CellPhone || '').trim();
+        if (name && phone) map[name] = phone;
+      }
+      await env.SCHEDULE_KV.put('user_phones', JSON.stringify(map));
+      console.log(`[用户] 更新成功: ${Object.keys(map).length} 人`);
+    }
+  } catch (e) { console.error('[用户] 抓取异常:', e.message); }
 }
 
 // ====== 主 Worker ======
@@ -306,6 +346,12 @@ export default {
         const ok = await fetchKeysFromRemote(env);
         return Response.json({ ok, message: ok ? 'Cookie 已更新，抓取成功' : 'Cookie 已保存，但抓取失败（可能过期）' });
       }
+    }
+
+    // 用户电话簿
+    if (path === '/api/users') {
+      const raw = await env.SCHEDULE_KV.get('user_phones');
+      return Response.json(raw ? JSON.parse(raw) : {});
     }
 
     // 日志
