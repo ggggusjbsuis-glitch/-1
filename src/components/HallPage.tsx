@@ -293,7 +293,7 @@ export default function HallPage({ eventsByDate, editing, onSave, staffList }: P
           event={editEvent}
           date={editDate}
           staffList={staffList}
-          occupiedSlots={selEvents.filter(e => e.status === 'occupied' && e.id !== editEvent?.id).map(e => e.timeSlot)}
+          occupiedSlots={(data[editDate] || []).filter(e => e.status === 'occupied' && e.id !== editEvent?.id).map(e => e.timeSlot)}
           onSave={handleSave}
           onClose={() => { setEditEvent(null); setEditDate(''); }}
         />
