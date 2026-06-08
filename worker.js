@@ -186,19 +186,22 @@ async function sendEventEmails(env, hallData, staffList) {
   for (const [date, events] of Object.entries(hallData || {})) {
     for (const evt of events) {
       if (evt.status !== 'occupied' || !evt.contactPerson) continue;
-      // 已发过邮件的跳过
       if (evt._notified) continue;
-      const staff = staffList.find((s) => s.name === evt.contactPerson);
-      console.log('[邮件]', date, evt.eventName, '→', evt.contactPerson, '→', staff ? `email=${staff.email || '(空)'}` : '人员未找到');
-      if (!staff || !staff.email) continue;
-      if (sent.has(staff.email + evt.id)) continue;
-      sent.add(staff.email + evt.id);
-      await sendEmail(env, staff.email,
-        `【报告厅】活动安排通知 - ${evt.eventName}`,
-        `活动名称：${evt.eventName}\n时间：${date} ${evt.timeSlot}\n地点：报告厅\n负责人：${evt.contactPerson} ${evt.contactPhone || ''}\n主办单位：${evt.organizer || '无'}\n\n此邮件由系统自动发送，请勿回复。`
-      );
+      // 支持多人（用 、 或 , 分隔）
+      const names = evt.contactPerson.split(/[,，、]/).map(s => s.trim()).filter(Boolean);
+      for (const name of names) {
+        const staff = staffList.find((s) => s.name === name);
+        console.log('[邮件]', date, evt.eventName, '→', name, '→', staff ? `email=${staff.email || '(空)'}` : '人员未找到');
+        if (!staff || !staff.email) continue;
+        if (sent.has(staff.email + evt.id)) continue;
+        sent.add(staff.email + evt.id);
+        await sendEmail(env, staff.email,
+          `【报告厅】活动安排通知 - ${evt.eventName}`,
+          `活动名称：${evt.eventName}\n时间：${date} ${evt.timeSlot}\n地点：报告厅\n负责人：${evt.contactPerson} ${evt.contactPhone || ''}\n主办单位：${evt.organizer || '无'}\n\n此邮件由系统自动发送，请勿回复。`
+        );
+        await new Promise((r) => setTimeout(r, 600));
+      }
       evt._notified = true;
-      await new Promise((r) => setTimeout(r, 600)); // 避免触发 Resend 限流
       changed = true;
     }
   }
