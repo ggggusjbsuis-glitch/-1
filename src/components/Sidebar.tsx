@@ -7,13 +7,14 @@ interface Props {
 }
 
 const allItems: { id: TabId; icon: string; label: string; adminOnly?: boolean }[] = [
-  { id: 'staff', icon: '👥', label: '人员管理' },
   { id: 'classroom', icon: '🏫', label: '教室管理' },
   { id: 'keys', icon: '🔑', label: '钥匙管理' },
   { id: 'hall', icon: '🎤', label: '报告厅' },
   { id: 'auditorium', icon: '🏛', label: '大礼堂' },
   { id: 'logs', icon: '📋', label: '钥匙日志' },
   { id: 'dashboard', icon: '📊', label: '数据看板', adminOnly: true },
+  { id: 'staff', icon: '👥', label: '人员1' },
+  { id: 'staff2', icon: '👤', label: '人员2' },
 ];
 
 export default function Sidebar({ active, onChange, isEditing }: Props) {

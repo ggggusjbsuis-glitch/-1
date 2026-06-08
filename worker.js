@@ -302,6 +302,21 @@ export default {
       }
     }
 
+    // 人员2
+    if (path === '/api/staff2') {
+      if (method === 'GET') {
+        const data = await kvGet(env, 'staff2', DEFAULTS.staff);
+        return Response.json(data);
+      }
+      if (method === 'PUT') {
+        const body = await request.json();
+        if (!checkPassword(env, body)) return Response.json({ error: '密码错误' }, { status: 403 });
+        const sd = body.data !== undefined ? body.data : body;
+        await kvPut(env, 'staff2', sd);
+        return Response.json({ ok: true });
+      }
+    }
+
     // 大礼堂
     if (path === '/api/auditorium') {
       if (method === 'GET') {
