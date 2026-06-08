@@ -414,14 +414,15 @@ export default {
           } else { leftovers.push(r); }
         }
 
-        // 第二轮：剩余记录按全局 FIFO 配对（处理 A 借 B 还）
-        const globalStack = [];
+        // 第二轮：剩余记录按钥匙+时间 FIFO 配对（处理 A 借 B 还）
+        const keyStacks = {};
         for (const r of leftovers) {
           const act = classify(r);
-          if (act === 'borrow') { globalStack.push(r); }
-          else if (act === 'return' && globalStack.length > 0) {
-            const b = globalStack.shift();
-            pairs.push({ keyName: r.keyName, borrowTime: b.time, returnTime: r.time, duration: Math.round((new Date(r.time)-new Date(b.time))/60000), borrower: r.userName, date: b.time.slice(0,10) });
+          if (!keyStacks[r.keyName]) keyStacks[r.keyName] = [];
+          if (act === 'borrow') { keyStacks[r.keyName].push(r); }
+          else if (act === 'return' && keyStacks[r.keyName].length > 0) {
+            const b = keyStacks[r.keyName].shift();
+            pairs.push({ keyName: r.keyName, borrowTime: b.time, returnTime: r.time, duration: Math.round((new Date(r.time)-new Date(b.time))/60000), borrower: b.userName, date: b.time.slice(0,10) });
           }
         }
         return pairs;

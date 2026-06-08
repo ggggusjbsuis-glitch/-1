@@ -48,10 +48,10 @@ export default function App() {
     return () => clearInterval(t);
   }, []);
 
-  const saveStaff = async (list: Staff[]) => { setStaff(list); await api('PUT', '/api/staff', { password: 'admin123', data: list }); };
-  const saveStaff2 = async (list: Staff[]) => { setStaff2(list); await api('PUT', '/api/staff2', { password: 'admin123', data: list }); };
-  const saveHall = async (data: Record<string, HallEvent[]>) => { setHallEvents(data); await api('PUT', '/api/hall', { password: 'admin123', data }); };
-  const saveAuditorium = async (data: Record<string, HallEvent[]>) => { setAudEvents(data); await api('PUT', '/api/auditorium', { password: 'admin123', data }); };
+  const saveStaff = async (list: Staff[]) => { const ok = await api('PUT', '/api/staff', { password: 'admin123', data: list }); if (ok) setStaff(list); };
+  const saveStaff2 = async (list: Staff[]) => { const ok = await api('PUT', '/api/staff2', { password: 'admin123', data: list }); if (ok) setStaff2(list); };
+  const saveHall = async (data: Record<string, HallEvent[]>) => { const ok = await api('PUT', '/api/hall', { password: 'admin123', data }); if (ok) setHallEvents(data); };
+  const saveAuditorium = async (data: Record<string, HallEvent[]>) => { const ok = await api('PUT', '/api/auditorium', { password: 'admin123', data }); if (ok) setAudEvents(data); };
 
   const [timeStr, setTimeStr] = useState('');
   useEffect(() => {

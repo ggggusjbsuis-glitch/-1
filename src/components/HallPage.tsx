@@ -185,7 +185,7 @@ export default function HallPage({ eventsByDate, editing, onSave, staffList }: P
               return (
                 <button
                   key={ds}
-                  onClick={() => { setSelectedDate(ds); if (editing) { setEditDate(ds); setEditEvent(null); } }}
+                  onClick={() => { setSelectedDate(ds); if (editing) { setEditDate(ds); setEditEvent(null); } else { setShowDetail(true); } }}
                   className={`shrink-0 w-12 py-2 rounded-xl text-center transition-all border-[1.5px] ${
                     isSelected
                       ? 'bg-blue-600 text-white border-blue-600 shadow-[0_2px_6px_rgba(37,99,235,.25)]'
@@ -274,6 +274,7 @@ export default function HallPage({ eventsByDate, editing, onSave, staffList }: P
       {/* 编辑模式弹窗 */}
       {editDate && (
         <EditEventModal
+          key={editEvent?.id || editDate}
           event={editEvent}
           date={editDate}
           staffList={staffList}
