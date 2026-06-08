@@ -23,6 +23,8 @@ const DEFAULTS = {
       { id:'a', date:fmtDate(0), timeSlot:'08:00-10:00', eventName:'', organizer:'', contactPerson:'', contactPhone:'', status:'free' },
       { id:'b', date:fmtDate(0), timeSlot:'10:00-12:00', eventName:'', organizer:'', contactPerson:'', contactPhone:'', status:'free' },
       { id:'c', date:fmtDate(0), timeSlot:'14:00-16:00', eventName:'', organizer:'', contactPerson:'', contactPhone:'', status:'free' },
+      { id:'d', date:fmtDate(0), timeSlot:'16:00-18:00', eventName:'', organizer:'', contactPerson:'', contactPhone:'', status:'free' },
+      { id:'e', date:fmtDate(0), timeSlot:'18:00-21:00', eventName:'', organizer:'', contactPerson:'', contactPhone:'', status:'free' },
     ],
   }),
   schedule: { title:'课程表', days:{ monday:[], tuesday:[], wednesday:[], thursday:[], friday:[] } },
@@ -31,6 +33,8 @@ const DEFAULTS = {
       { id:'a1', date:fmtDate(0), timeSlot:'08:00-10:00', eventName:'', organizer:'', contactPerson:'', contactPhone:'', status:'free' },
       { id:'b1', date:fmtDate(0), timeSlot:'10:00-12:00', eventName:'', organizer:'', contactPerson:'', contactPhone:'', status:'free' },
       { id:'c1', date:fmtDate(0), timeSlot:'14:00-16:00', eventName:'', organizer:'', contactPerson:'', contactPhone:'', status:'free' },
+      { id:'d1', date:fmtDate(0), timeSlot:'16:00-18:00', eventName:'', organizer:'', contactPerson:'', contactPhone:'', status:'free' },
+      { id:'e1', date:fmtDate(0), timeSlot:'18:00-21:00', eventName:'', organizer:'', contactPerson:'', contactPhone:'', status:'free' },
     ],
   }),
 };

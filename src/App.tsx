@@ -28,7 +28,7 @@ export default function App() {
   const [hallEvents, setHallEvents] = useState<Record<string, HallEvent[]>>(mockHallEvents);
   const [audEvents, setAudEvents] = useState<Record<string, HallEvent[]>>({});
   const [staff2, setStaff2] = useState<Staff[]>(mockStaff);
-  const [isEditing, setIsEditing] = useState(false);
+  const [isEditing, setIsEditing] = useState(() => { try { return localStorage.getItem('admin_auth') === '1'; } catch { return false; } });
   const [showGate, setShowGate] = useState(false);
   const [showSettings, setShowSettings] = useState(false);
 
@@ -97,7 +97,7 @@ export default function App() {
         </main>
       </div>
 
-      {showGate && <AdminGate onUnlock={() => { setShowGate(false); setIsEditing(true); }} onClose={() => setShowGate(false)} />}
+      {showGate && <AdminGate onUnlock={() => { setShowGate(false); setIsEditing(true); try { localStorage.setItem('admin_auth', '1'); } catch {} }} onClose={() => setShowGate(false)} />}
       {showSettings && <SettingsModal onClose={() => setShowSettings(false)} />}
     </div>
   );

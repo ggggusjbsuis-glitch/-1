@@ -14,6 +14,7 @@ const DEFAULT_SLOTS = [
   { timeSlot: '10:00-12:00' },
   { timeSlot: '14:00-16:00' },
   { timeSlot: '16:00-18:00' },
+  { timeSlot: '18:00-21:00' },
 ];
 
 function genId() { return Date.now().toString(36) + Math.random().toString(36).slice(2, 6); }

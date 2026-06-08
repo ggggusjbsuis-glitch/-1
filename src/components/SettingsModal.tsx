@@ -109,9 +109,10 @@ export default function SettingsModal({ onClose }: Props) {
         </div>
 
         <div className="p-5 border-t border-gray-100 flex justify-between sticky bottom-0 bg-white">
-          <button onClick={handleFetchNow} className="px-4 py-2 text-sm text-blue-600 hover:text-blue-800 font-medium">
-            手动抓取一次
-          </button>
+          <div className="flex gap-3">
+            <button onClick={handleFetchNow} className="px-4 py-2 text-sm text-blue-600 hover:text-blue-800 font-medium">手动抓取一次</button>
+            <button onClick={() => { try { localStorage.removeItem('admin_auth'); } catch {} window.location.reload(); }} className="px-4 py-2 text-sm text-red-400 hover:text-red-600 font-medium">清除登录</button>
+          </div>
           <div className="flex gap-3">
             <button onClick={onClose} className="px-4 py-2 text-sm text-gray-400 hover:text-gray-600 font-medium">关闭</button>
             <button
