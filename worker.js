@@ -392,14 +392,19 @@ export default {
 
       // 通用配对函数
       function pairRecords(recs) {
-        const sorted = [...recs].sort((a, b) => a.time.localeCompare(b.time));
-        const stack = [];
+        // 按借用人分组，同一人的借出和归还配对
+        const userStacks = {};
         const pairs = [];
+        const sorted = [...recs].sort((a, b) => a.time.localeCompare(b.time));
         for (const r of sorted) {
           const act = r.action === 'borrow' ? 'borrow' : r.action === 'return' ? 'return' : r.action === '取出' ? 'borrow' : r.action === '归还' ? 'return' : null;
-          if (act === 'borrow') stack.push(r);
-          else if (act === 'return' && stack.length > 0) {
-            const borrow = stack.shift();
+          if (!act) continue;
+          const key = `${r.keyName}_${r.userName}`; // 同一钥匙同一人的配对
+          if (!userStacks[key]) userStacks[key] = [];
+          if (act === 'borrow') {
+            userStacks[key].push(r);
+          } else if (act === 'return' && userStacks[key].length > 0) {
+            const borrow = userStacks[key].shift();
             const dur = Math.round((new Date(r.time) - new Date(borrow.time)) / 60000);
             pairs.push({ keyName: r.keyName, borrowTime: borrow.time, returnTime: r.time, duration: dur, borrower: r.userName, date: borrow.time.slice(0, 10) });
           }
