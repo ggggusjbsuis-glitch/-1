@@ -332,7 +332,7 @@ export default {
         if (!checkPassword(env, body)) return Response.json({ error: '密码错误' }, { status: 403 });
         const audData = body.data !== undefined ? body.data : body;
         await kvPut(env, 'auditorium', audData);
-        const staffList = await kvGet(env, 'staff', DEFAULTS.staff);
+        const staffList = await kvGet(env, 'staff2', DEFAULTS.staff);
         await sendEventEmails(env, audData, staffList);
         return Response.json({ ok: true });
       }
