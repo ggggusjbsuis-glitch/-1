@@ -22,7 +22,7 @@ async function api<T>(method: string, url: string, body?: unknown): Promise<T | 
 }
 
 export default function App() {
-  const [activeTab, setActiveTab] = useState<TabId>('staff');
+  const [activeTab, setActiveTab] = useState<TabId>('classroom');
   const [staff, setStaff] = useState<Staff[]>(mockStaff);
   const [keyData, setKeyData] = useState<KeyData | null>(mockKeyData);
   const [hallEvents, setHallEvents] = useState<Record<string, HallEvent[]>>(mockHallEvents);
