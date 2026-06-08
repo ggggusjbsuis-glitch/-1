@@ -47,9 +47,14 @@ export default function HallPage({ eventsByDate, editing, onSave, staffList }: P
 
   const handleSave = (evt: HallEvent) => {
     const next = { ...data };
-    const dayEvents = next[evt.date] || DEFAULT_SLOTS.map((s) => ({ id: genId(), date: evt.date, timeSlot: s.timeSlot, eventName: '', organizer: '', contactPerson: '', contactPhone: '', status: 'free' as const }));
-    const idx = dayEvents.findIndex((e) => e.id === evt.id);
-    if (idx >= 0) dayEvents[idx] = evt; else dayEvents.push(evt);
+    let dayEvents = next[evt.date] || DEFAULT_SLOTS.map((s) => ({ id: genId(), date: evt.date, timeSlot: s.timeSlot, eventName: '', organizer: '', contactPerson: '', contactPhone: '', status: 'free' as const }));
+    const idIdx = dayEvents.findIndex((e) => e.id === evt.id);
+    if (idIdx >= 0) { dayEvents[idIdx] = evt; }
+    else {
+      const slotIdx = dayEvents.findIndex((e) => e.status === 'free' && e.timeSlot === evt.timeSlot);
+      if (slotIdx >= 0) dayEvents[slotIdx] = evt; else dayEvents.push(evt);
+    }
+    dayEvents.sort((a, b) => a.timeSlot.localeCompare(b.timeSlot));
     next[evt.date] = dayEvents;
     setData(next);
     onSave(next);
