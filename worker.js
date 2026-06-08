@@ -333,7 +333,7 @@ export default {
         const audData = body.data !== undefined ? body.data : body;
         await kvPut(env, 'auditorium', audData);
         const staffList = await kvGet(env, 'staff', DEFAULTS.staff);
-        sendEventEmails(env, audData, staffList);
+        await sendEventEmails(env, audData, staffList);
         return Response.json({ ok: true });
       }
     }
