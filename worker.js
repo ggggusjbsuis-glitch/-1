@@ -392,21 +392,33 @@ export default {
 
       // 通用配对函数
       function pairRecords(recs) {
-        // 按借用人分组，同一人的借出和归还配对
+        const sorted = [...recs].sort((a, b) => a.time.localeCompare(b.time));
+        function classify(r) { if (r.action === 'borrow' || r.action === '取出') return 'borrow'; if (r.action === 'return' || r.action === '归还') return 'return'; return null; }
+
+        // 第一轮：同人配对（A 借 A 还）
         const userStacks = {};
         const pairs = [];
-        const sorted = [...recs].sort((a, b) => a.time.localeCompare(b.time));
+        const leftovers = [];
         for (const r of sorted) {
-          const act = r.action === 'borrow' ? 'borrow' : r.action === 'return' ? 'return' : r.action === '取出' ? 'borrow' : r.action === '归还' ? 'return' : null;
+          const act = classify(r);
           if (!act) continue;
-          const key = `${r.keyName}_${r.userName}`; // 同一钥匙同一人的配对
-          if (!userStacks[key]) userStacks[key] = [];
-          if (act === 'borrow') {
-            userStacks[key].push(r);
-          } else if (act === 'return' && userStacks[key].length > 0) {
-            const borrow = userStacks[key].shift();
-            const dur = Math.round((new Date(r.time) - new Date(borrow.time)) / 60000);
-            pairs.push({ keyName: r.keyName, borrowTime: borrow.time, returnTime: r.time, duration: dur, borrower: r.userName, date: borrow.time.slice(0, 10) });
+          const uk = `${r.keyName}_${r.userName}`;
+          if (!userStacks[uk]) userStacks[uk] = [];
+          if (act === 'borrow') { userStacks[uk].push(r); }
+          else if (act === 'return' && userStacks[uk].length > 0) {
+            const b = userStacks[uk].shift();
+            pairs.push({ keyName: r.keyName, borrowTime: b.time, returnTime: r.time, duration: Math.round((new Date(r.time)-new Date(b.time))/60000), borrower: r.userName, date: b.time.slice(0,10) });
+          } else { leftovers.push(r); }
+        }
+
+        // 第二轮：剩余记录按全局 FIFO 配对（处理 A 借 B 还）
+        const globalStack = [];
+        for (const r of leftovers) {
+          const act = classify(r);
+          if (act === 'borrow') { globalStack.push(r); }
+          else if (act === 'return' && globalStack.length > 0) {
+            const b = globalStack.shift();
+            pairs.push({ keyName: r.keyName, borrowTime: b.time, returnTime: r.time, duration: Math.round((new Date(r.time)-new Date(b.time))/60000), borrower: r.userName, date: b.time.slice(0,10) });
           }
         }
         return pairs;
