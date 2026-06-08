@@ -422,9 +422,8 @@ export default {
         for (const s of gk.sessions) {
           const d = s.borrowTime.slice(0, 10);
           const h = parseInt(s.borrowTime.slice(11, 13));
-          const dayAud = (auditoriumData && auditoriumData[d]) || [];
           const dayHall = (hallData && hallData[d]) || [];
-          const match = [...dayAud, ...dayHall].filter((e) => e.status === 'occupied').find((e) => {
+          const match = dayHall.filter((e) => e.status === 'occupied').find((e) => {
             const [sh] = e.timeSlot.split('-').map((t) => parseInt(t.split(':')[0]));
             return Math.abs(h - sh) <= 2;
           });
@@ -460,9 +459,8 @@ export default {
         // 匹配活动
         for (const p of dayPairs) {
           const h = parseInt(p.borrowTime.slice(11, 13));
-          const dayAud = (auditoriumData && auditoriumData[d]) || [];
           const dayHall = (hallData && hallData[d]) || [];
-          const match = [...dayAud, ...dayHall].filter((e) => e.status === 'occupied').find((e) => {
+          const match = dayHall.filter((e) => e.status === 'occupied').find((e) => {
             const [sh] = e.timeSlot.split('-').map((t) => parseInt(t.split(':')[0]));
             return Math.abs(h - sh) <= 2;
           });
