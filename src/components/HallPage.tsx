@@ -47,7 +47,7 @@ export default function HallPage({ eventsByDate, editing, onSave, staffList }: P
 
   const handleSave = (evt: HallEvent) => {
     const next = { ...data };
-    let dayEvents = next[evt.date] || DEFAULT_SLOTS.map((s) => ({ id: genId(), date: evt.date, timeSlot: s.timeSlot, eventName: '', organizer: '', contactPerson: '', contactPhone: '', status: 'free' as const }));
+    let dayEvents = next[evt.date] || DEFAULT_SLOTS.map((s) => ({ id: genId(), date: evt.date, timeSlot: s.timeSlot, eventName: '', organizer: '', contactPerson: '', contactPhone: '', counterpartPhone: '', status: 'free' as const }));
     // 按 id 匹配（编辑已有活动），否则按时段替换空闲占位
     const idIdx = dayEvents.findIndex((e) => e.id === evt.id);
     if (idIdx >= 0) { dayEvents[idIdx] = evt; }
@@ -94,7 +94,7 @@ export default function HallPage({ eventsByDate, editing, onSave, staffList }: P
   const monthEventCount = Object.entries(data).filter(([k, v]) => k.startsWith(fmtISO(monthStart).slice(0, 7)) && v.some((e) => e.status === 'occupied')).length;
 
   // 选中日期的活动
-  const selEvents = data[selectedDate] || DEFAULT_SLOTS.map((s) => ({ id: genId(), date: selectedDate, timeSlot: s.timeSlot, eventName: '', organizer: '', contactPerson: '', contactPhone: '', status: 'free' as const }));
+  const selEvents = data[selectedDate] || DEFAULT_SLOTS.map((s) => ({ id: genId(), date: selectedDate, timeSlot: s.timeSlot, eventName: '', organizer: '', contactPerson: '', contactPhone: '', counterpartPhone: '', status: 'free' as const }));
   const selDateObj = new Date(selectedDate + 'T00:00:00');
 
   return (
@@ -228,7 +228,7 @@ export default function HallPage({ eventsByDate, editing, onSave, staffList }: P
                 ) : (
                   <>
                     <div className="font-semibold text-[15px] text-gray-900">{e.eventName}</div>
-                    <div className="text-[13px] text-gray-400 mt-1.5 flex flex-wrap gap-x-4 gap-y-1"><span>🏛 {e.organizer}</span><span>👤 {e.contactPerson}</span><span>📞 {e.contactPhone}</span></div>
+                    <div className="text-[13px] text-gray-400 mt-1.5 flex flex-wrap gap-x-4 gap-y-1"><span>🏛 {e.organizer}</span><span>👤 {e.contactPerson}</span><span>📞 {e.contactPhone}</span>{e.counterpartPhone && <span>📱 对方 {e.counterpartPhone}</span>}</div>
                   </>
                 )}
               </div>
@@ -322,6 +322,7 @@ function EditEventModal({
   const [organizer, setOrganizer] = useState(event?.organizer || '');
   const [contactPerson, setContactPerson] = useState(event?.contactPerson || '');
   const [contactPhone, setContactPhone] = useState(event?.contactPhone || '');
+  const [counterpartPhone, setCounterpartPhone] = useState(event?.counterpartPhone || '');
 
   const selectStaff = (name: string) => {
     const s = staffList.find((p) => p.name === name);
@@ -330,12 +331,12 @@ function EditEventModal({
 
   const save = () => {
     if (!eventName.trim()) return;
-    onSave({ id: event?.id || genId(), date, timeSlot, eventName: eventName.trim(), organizer: organizer.trim(), contactPerson: contactPerson.trim(), contactPhone: contactPhone.trim(), status: 'occupied' });
+    onSave({ id: event?.id || genId(), date, timeSlot, eventName: eventName.trim(), organizer: organizer.trim(), contactPerson: contactPerson.trim(), contactPhone: contactPhone.trim(), counterpartPhone: counterpartPhone.trim(), status: 'occupied' });
     onClose();
   };
 
   const clearToFree = () => {
-    if (event) onSave({ ...event, eventName: '', organizer: '', contactPerson: '', contactPhone: '', status: 'free' });
+    if (event) onSave({ ...event, eventName: '', organizer: '', contactPerson: '', contactPhone: '', counterpartPhone: '', status: 'free' });
     onClose();
   };
 
@@ -372,6 +373,10 @@ function EditEventModal({
           <div>
             <label className="block text-xs text-gray-400 mb-1 font-medium">联系电话</label>
             <input value={contactPhone} onChange={(e) => setContactPhone(e.target.value)} placeholder="13800001111" className="w-full border-[1.5px] border-gray-200 rounded-xl px-3 py-2.5 text-sm outline-none focus:border-blue-500 transition-all" />
+          </div>
+          <div className="border-t border-dashed border-gray-100 pt-4">
+            <label className="block text-xs text-gray-400 mb-1 font-medium">📞 对方方联系人电话</label>
+            <input value={counterpartPhone} onChange={(e) => setCounterpartPhone(e.target.value)} placeholder="填写对方方活动对接人的电话" className="w-full border-[1.5px] border-gray-200 rounded-xl px-3 py-2.5 text-sm outline-none focus:border-blue-500 transition-all" />
           </div>
         </div>
         <div className="p-5 border-t border-gray-100 flex justify-between sticky bottom-0 bg-white">

@@ -98,6 +98,7 @@ export interface HallEvent {
   organizer: string;
   contactPerson: string;
   contactPhone: string;
+  counterpartPhone?: string;
   status: 'occupied' | 'free';
 }
 
