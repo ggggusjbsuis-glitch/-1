@@ -156,6 +156,7 @@ async function fetchKeysFromRemote(env) {
 
 // ====== 邮件发送（Resend） ======
 async function sendEmail(env, to, subject, body) {
+  console.log(`[邮件发送] To:${to} 主题:${subject} 正文时间:${body.match(/时间：(.+)/)?.[1] || '?'}`);
   const apiKey = env.RESEND_API_KEY;
   if (!apiKey) { console.error('[邮件] 未配置 RESEND_API_KEY'); return; }
   try {
@@ -179,7 +180,8 @@ async function sendEmail(env, to, subject, body) {
   }
 }
 
-async function sendEventEmails(env, hallData, staffList) {
+async function sendEventEmails(env, hallData, staffList, location) {
+  location = location || '报告厅';
   console.log('[邮件] 开始检查活动，共', Object.keys(hallData || {}).length, '个日期');
   let changed = false;
   const sent = new Set();
@@ -187,7 +189,6 @@ async function sendEventEmails(env, hallData, staffList) {
     for (const evt of events) {
       if (evt.status !== 'occupied' || !evt.contactPerson) continue;
       if (evt._notified) continue;
-      // 支持多人（用 、 或 , 分隔）
       const names = evt.contactPerson.split(/[,，、]/).map(s => s.trim()).filter(Boolean);
       for (const name of names) {
         const staff = staffList.find((s) => s.name === name);
@@ -195,9 +196,10 @@ async function sendEventEmails(env, hallData, staffList) {
         if (!staff || !staff.email) continue;
         if (sent.has(staff.email + evt.id)) continue;
         sent.add(staff.email + evt.id);
+        console.log('[邮件调试] 发送:', date, evt.timeSlot, '->', staff.email);
         await sendEmail(env, staff.email,
-          `【报告厅】活动安排通知 - ${evt.eventName}`,
-          `活动名称：${evt.eventName}\n时间：${date} ${evt.timeSlot}\n地点：报告厅\n负责人：${evt.contactPerson} ${evt.contactPhone || ''}\n主办单位：${evt.organizer || '无'}\n\n此邮件由系统自动发送，请勿回复。`
+          `【${location}】活动安排通知 - ${evt.eventName}`,
+          `活动名称：${evt.eventName}\n时间：${date} ${evt.timeSlot}\n地点：${location}\n负责人：${evt.contactPerson} ${evt.contactPhone || ''}\n主办单位：${evt.organizer || '无'}\n\n此邮件由系统自动发送，请勿回复。`
         );
         await new Promise((r) => setTimeout(r, 600));
       }
@@ -206,7 +208,7 @@ async function sendEventEmails(env, hallData, staffList) {
     }
   }
   console.log('[邮件] 完成，发送', sent.size, '封');
-  if (changed) await kvPut(env, 'hall', hallData); // 保存 _notified 标记
+  if (changed) await kvPut(env, location === '大礼堂' ? 'auditorium' : 'hall', hallData);
 }
 
 // ====== 用户列表抓取 ======
@@ -304,7 +306,7 @@ export default {
         }
         await kvPut(env, 'hall', hallData);
         const staffList = await kvGet(env, 'staff', DEFAULTS.staff);
-        await sendEventEmails(env, hallData, staffList);
+        await sendEventEmails(env, hallData, staffList, '报告厅');
         return Response.json({ ok: true });
       }
     }
@@ -336,7 +338,7 @@ export default {
         const audData = body.data !== undefined ? body.data : body;
         await kvPut(env, 'auditorium', audData);
         const staffList = await kvGet(env, 'staff2', DEFAULTS.staff);
-        await sendEventEmails(env, audData, staffList);
+        await sendEventEmails(env, audData, staffList, '大礼堂');
         return Response.json({ ok: true });
       }
     }
