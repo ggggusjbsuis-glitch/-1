@@ -399,32 +399,41 @@ export default {
       function pairRecords(recs) {
         const sorted = [...recs].sort((a, b) => a.time.localeCompare(b.time));
         function classify(r) { if (r.action === 'borrow' || r.action === '取出') return 'borrow'; if (r.action === 'return' || r.action === '归还') return 'return'; return null; }
+        function day(r) { return r.time.slice(0, 10); }
 
-        // 第一轮：同人配对（A 借 A 还）
-        const userStacks = {};
+        // 按日期分组，跨天不配对（钥匙应在当天归还）
         const pairs = [];
-        const leftovers = [];
+        const byDay = {};
         for (const r of sorted) {
-          const act = classify(r);
-          if (!act) continue;
-          const uk = `${r.keyName}_${r.userName}`;
-          if (!userStacks[uk]) userStacks[uk] = [];
-          if (act === 'borrow') { userStacks[uk].push(r); }
-          else if (act === 'return' && userStacks[uk].length > 0) {
-            const b = userStacks[uk].shift();
-            pairs.push({ keyName: r.keyName, borrowTime: b.time, returnTime: r.time, duration: Math.round((new Date(r.time)-new Date(b.time))/60000), borrower: r.userName, date: b.time.slice(0,10) });
-          } else { leftovers.push(r); }
+          const d = day(r);
+          if (!byDay[d]) byDay[d] = [];
+          byDay[d].push(r);
         }
-
-        // 第二轮：剩余记录按钥匙+时间 FIFO 配对（处理 A 借 B 还）
-        const keyStacks = {};
-        for (const r of leftovers) {
-          const act = classify(r);
-          if (!keyStacks[r.keyName]) keyStacks[r.keyName] = [];
-          if (act === 'borrow') { keyStacks[r.keyName].push(r); }
-          else if (act === 'return' && keyStacks[r.keyName].length > 0) {
-            const b = keyStacks[r.keyName].shift();
-            pairs.push({ keyName: r.keyName, borrowTime: b.time, returnTime: r.time, duration: Math.round((new Date(r.time)-new Date(b.time))/60000), borrower: b.userName, date: b.time.slice(0,10) });
+        for (const [date, dayRecs] of Object.entries(byDay)) {
+          // 第一轮：同人配对
+          const userStacks = {};
+          const leftovers = [];
+          for (const r of dayRecs) {
+            const act = classify(r);
+            if (!act) continue;
+            const uk = `${r.keyName}_${r.userName}`;
+            if (!userStacks[uk]) userStacks[uk] = [];
+            if (act === 'borrow') { userStacks[uk].push(r); }
+            else if (act === 'return' && userStacks[uk].length > 0) {
+              const b = userStacks[uk].shift();
+              pairs.push({ keyName: r.keyName, borrowTime: b.time, returnTime: r.time, duration: Math.round((new Date(r.time)-new Date(b.time))/60000), borrower: r.userName, date });
+            } else { leftovers.push(r); }
+          }
+          // 第二轮：同一天内同钥匙 FIFO
+          const keyStacks = {};
+          for (const r of leftovers) {
+            const act = classify(r);
+            if (!keyStacks[r.keyName]) keyStacks[r.keyName] = [];
+            if (act === 'borrow') { keyStacks[r.keyName].push(r); }
+            else if (act === 'return' && keyStacks[r.keyName].length > 0) {
+              const b = keyStacks[r.keyName].shift();
+              pairs.push({ keyName: r.keyName, borrowTime: b.time, returnTime: r.time, duration: Math.round((new Date(r.time)-new Date(b.time))/60000), borrower: b.userName, date });
+            }
           }
         }
         return pairs;
