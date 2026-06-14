@@ -79,8 +79,8 @@ export default function DashboardPage() {
                   <tr key={p.borrowTime} className="hover:bg-gray-50">
                     <td className="py-2 text-gray-500 border-b border-gray-50">{d.date} {WEEKDAYS[new Date(d.date+'T00:00:00').getDay()]}</td>
                     <td className="py-2 font-medium border-b border-gray-50">{p.eventName || <span className="text-gray-300">未关联活动</span>}</td>
-                    <td className="py-2 text-gray-500 font-mono border-b border-gray-50">{p.borrowTime.slice(11,16)}</td>
-                    <td className="py-2 text-gray-500 font-mono border-b border-gray-50">{p.returnTime.slice(11,16)}</td>
+                    <td className="py-2 text-gray-500 font-mono border-b border-gray-50">{p.borrowTime.slice(5,16)}</td>
+                    <td className="py-2 text-gray-500 font-mono border-b border-gray-50">{p.returnTime.slice(5,16)}</td>
                     <td className="py-2 text-right font-semibold text-blue-600 border-b border-gray-50">{fmtDur(p.duration)}</td>
                   </tr>
                 )))}
