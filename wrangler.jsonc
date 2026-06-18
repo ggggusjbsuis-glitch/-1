@@ -23,6 +23,6 @@
     "ADMIN_PASSWORD": "admin123"
   },
   "triggers": {
-    "crons": ["*/5 * * * *"]
+    "crons": ["*/10 * * * *"]
   }
 }

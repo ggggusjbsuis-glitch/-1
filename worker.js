@@ -116,9 +116,15 @@ async function fetchKeysFromRemote(env) {
       },
       todayRecords: records,
     };
-    await kvPut(env, 'keys', data);
+    // 对比上次数据，无变化则跳过写入（节省 KV 写入次数）
+    const oldKeys = await env.SCHEDULE_KV.get('keys', 'json');
+    const oldHash = oldKeys ? JSON.stringify(oldKeys.keys).length + '_' + (oldKeys.todayRecords || []).length : '';
+    const newHash = JSON.stringify(data.keys).length + '_' + (data.todayRecords || []).length;
+    if (oldHash !== newHash) {
+      await kvPut(env, 'keys', data);
+      console.log(`[钥匙] 更新成功: ${keyList.length} 把, ${records.length} 条记录`);
+    }
     await env.SCHEDULE_KV.put('key_fetch_status', `ok_${Date.now()}`);
-    console.log(`[钥匙] 更新成功: ${keyList.length} 把, ${records.length} 条记录`);
 
     // 追加日志：对比之前见过的记录，新记录写入日志
     const seenIds = JSON.parse(await env.SCHEDULE_KV.get('seen_record_ids') || '[]');
