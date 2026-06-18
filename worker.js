@@ -117,11 +117,10 @@ async function fetchKeysFromRemote(env) {
       todayRecords: records,
     };
     // 对比上次数据，无变化则跳过写入（节省 KV 写入次数）
-    const oldKeys = await env.SCHEDULE_KV.get('keys', 'json');
-    const oldHash = oldKeys ? JSON.stringify(oldKeys.keys).length + '_' + (oldKeys.todayRecords || []).length : '';
-    const newHash = JSON.stringify(data.keys).length + '_' + (data.todayRecords || []).length;
-    if (oldHash !== newHash) {
-      await kvPut(env, 'keys', data);
+    const oldRaw = await env.SCHEDULE_KV.get('keys');
+    const newRaw = JSON.stringify(data);
+    if (oldRaw !== newRaw) {
+      await env.SCHEDULE_KV.put('keys', newRaw);
       console.log(`[钥匙] 更新成功: ${keyList.length} 把, ${records.length} 条记录`);
     }
     await env.SCHEDULE_KV.put('key_fetch_status', `ok_${Date.now()}`);
@@ -341,7 +340,18 @@ export default {
       if (method === 'PUT') {
         const body = await request.json();
         if (!checkPassword(env, body)) return Response.json({ error: '密码错误' }, { status: 403 });
-        const audData = body.data !== undefined ? body.data : body;
+        const rawAudData = body.data !== undefined ? body.data : body;
+        const savedAud = await kvGet(env, 'auditorium', null);
+        const notifMap = {};
+        if (savedAud) {
+          for (const [d, evts] of Object.entries(savedAud)) {
+            for (const e of evts) { if (e._notified) notifMap[e.id] = true; }
+          }
+        }
+        const audData = {};
+        for (const [d, evts] of Object.entries(rawAudData || {})) {
+          audData[d] = evts.map((e) => ({ ...e, _notified: notifMap[e.id] || false }));
+        }
         await kvPut(env, 'auditorium', audData);
         const staffList = await kvGet(env, 'staff2', DEFAULTS.staff);
         await sendEventEmails(env, audData, staffList, '大礼堂');
@@ -522,7 +532,7 @@ export default {
     return env.ASSETS.fetch(request);
   },
 
-  // 定时任务：每 5 分钟抓取钥匙
+  // 定时任务：每 10 分钟抓取钥匙
   async scheduled(event, env) {
     console.log('[定时] 刷新钥匙数据...');
     await fetchKeysFromRemote(env);
