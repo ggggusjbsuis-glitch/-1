@@ -1,6 +1,80 @@
 // 现代教育科教育管理系统 - Cloudflare Worker
 const stripHtml = (s) => (s || '').replace(/<[^>]+>/g, '').trim();
-const fmtDate = (o) => { const d = new Date(); d.setDate(d.getDate() + o); return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`; };
+const CN_OFFSET_MS = 8 * 60 * 60 * 1000;
+const STAFF1_STATS_KEY = 'staff1_3101_stats';
+const STAFF1_3101_RECORDS_KEY = 'staff1_3101_records';
+
+function cnDateKey(date = new Date(), dayOffset = 0) {
+  const d = new Date(date.getTime() + CN_OFFSET_MS);
+  d.setUTCDate(d.getUTCDate() + dayOffset);
+  return `${d.getUTCFullYear()}-${String(d.getUTCMonth() + 1).padStart(2, '0')}-${String(d.getUTCDate()).padStart(2, '0')}`;
+}
+
+const fmtDate = (o) => cnDateKey(new Date(), o);
+
+function addDateKey(dateKey, days) {
+  const d = new Date(`${dateKey}T00:00:00Z`);
+  d.setUTCDate(d.getUTCDate() + days);
+  return d.toISOString().slice(0, 10);
+}
+
+function weekStartKey(dateKey) {
+  const d = new Date(`${dateKey}T00:00:00Z`);
+  const day = d.getUTCDay();
+  return addDateKey(dateKey, -(day === 0 ? 6 : day - 1));
+}
+
+function previousWeekStartKey(dateKey) {
+  return addDateKey(weekStartKey(dateKey), -7);
+}
+
+function previousMonthKey(monthKey) {
+  const [year, month] = monthKey.split('-').map(Number);
+  const d = new Date(Date.UTC(year, month - 2, 1));
+  return `${d.getUTCFullYear()}-${String(d.getUTCMonth() + 1).padStart(2, '0')}`;
+}
+
+function normalizeIdentity(value) {
+  return String(value || '').replace(/[\s\u00a0]/g, '').trim();
+}
+
+function sourceUserId(record) {
+  const candidates = [record.UserID, record.UserId, record.User_id, record.UserID_view, record.User_view_id, record.User_viewId];
+  const value = candidates.find((item) => item !== undefined && item !== null && String(item).trim());
+  return value === undefined ? '' : String(value).trim();
+}
+
+function findStaffMember(userName, staffList, externalId = '') {
+  const staff = Array.isArray(staffList) ? staffList : [];
+  if (externalId) {
+    const byExternalId = staff.find((person) => [person.sourceUserId, person.userId, person.externalId].some((id) => id !== undefined && String(id) === externalId));
+    if (byExternalId) return byExternalId;
+  }
+
+  const normalizedUser = normalizeIdentity(userName);
+  if (!normalizedUser) return null;
+  const candidates = staff
+    .filter((person) => normalizeIdentity(person.name))
+    .sort((a, b) => normalizeIdentity(b.name).length - normalizeIdentity(a.name).length);
+  return candidates.find((person) => {
+    const name = normalizeIdentity(person.name);
+    return normalizedUser === name || normalizedUser.endsWith(name) || normalizedUser.includes(name);
+  }) || null;
+}
+
+function enrichStaff1Record(record, staffList) {
+  const keyName = String(record.keyName || '').trim();
+  if (normalizeIdentity(keyName) !== normalizeIdentity('报3101')) return record;
+
+  const externalId = record.sourceUserId || sourceUserId(record);
+  const staff = findStaffMember(record.userName, staffList, externalId);
+  return {
+    ...record,
+    sourceUserId: externalId || record.sourceUserId || '',
+    staff1PersonKey: record.staff1PersonKey || (staff ? `staff:${staff.id}` : null),
+    staff1DisplayName: record.staff1DisplayName || (staff ? staff.name : ''),
+  };
+}
 
 // ====== 默认数据 ======
 const DEFAULTS = {
@@ -85,6 +159,7 @@ async function fetchKeysFromRemote(env) {
     kp.append('Page', '1'); kp.append('Limit', '200');
     const rawKeys = await post(BASE + '/Device/Key/Search', kp);
     if (!rawKeys) { await env.SCHEDULE_KV.put('key_fetch_status', 'cookie_expired'); return false; }
+    const staffList = await kvGet(env, 'staff', DEFAULTS.staff);
 
     const keyList = rawKeys.map((k) => ({
       id: k.ID, name: k.Name, location: k.Box_view, department: k.Organize_view,
@@ -100,10 +175,11 @@ async function fetchKeysFromRemote(env) {
     rp.append('Searcher.StartTime', today + ' 00:00:00');
     rp.append('Searcher.EndTime', today + ' 23:59:59');
     const rawRecords = await post(BASE + '/Logs/OpenLog/Search', rp);
-    const records = (rawRecords || []).filter((r) => (r.OpenDate || '').startsWith(today)).map((r) => ({
-      id: r.ID, userName: r.User_view, action: stripHtml(r.OpenType),
+    const records = (rawRecords || []).filter((r) => (r.OpenDate || '').startsWith(today)).map((r) => enrichStaff1Record({
+      id: r.ID, userName: r.User_view, action: stripHtml(r.OpenType), rawAction: stripHtml(r.OpenType),
       keyName: r.Key_view, location: r.Box_view, time: r.OpenDate, remark: r.Remark,
-    }));
+      sourceUserId: sourceUserId(r),
+    }, staffList));
 
     const data = {
       fetchedAt: new Date().toISOString(),
@@ -136,8 +212,12 @@ async function fetchKeysFromRemote(env) {
           keyName: r.keyName,
           userName: r.userName,
           action: r.action === '取出' ? 'borrow' : 'return',
+          rawAction: r.rawAction || r.action,
           location: r.location,
           remark: r.remark,
+          sourceUserId: r.sourceUserId || '',
+          staff1PersonKey: r.staff1PersonKey || null,
+          staff1DisplayName: r.staff1DisplayName || '',
         });
         seenIds.push(r.id);
       }
@@ -150,6 +230,8 @@ async function fetchKeysFromRemote(env) {
       console.log(`[日志] 新增 ${newLogs.length} 条，共 ${allLogs.length} 条`);
     }
 
+    await updateStaff1Records(env, newLogs, staffList);
+
     // 同步刷新用户列表
     await fetchUsers(env);
     return true;
@@ -157,6 +239,193 @@ async function fetchKeysFromRemote(env) {
     console.error('[钥匙] 抓取异常:', e.message);
     return false;
   }
+}
+
+function parseArray(raw) {
+  if (!raw) return [];
+  try {
+    const value = JSON.parse(raw);
+    return Array.isArray(value) ? value : [];
+  } catch {
+    return [];
+  }
+}
+
+function normalizeStoredStaff1Record(record, staffList) {
+  return enrichStaff1Record({
+    id: record.id,
+    time: record.time,
+    keyName: record.keyName,
+    userName: record.userName,
+    action: record.action,
+    rawAction: record.rawAction || '',
+    location: record.location,
+    remark: record.remark,
+    sourceUserId: record.sourceUserId || '',
+    staff1PersonKey: record.staff1PersonKey || null,
+    staff1DisplayName: record.staff1DisplayName || '',
+  }, staffList);
+}
+
+// 保留当前月和上月的报3101原始记录，避免通用日志的500条上限影响月度统计。
+async function updateStaff1Records(env, newLogs, staffList) {
+  const raw = await env.SCHEDULE_KV.get(STAFF1_3101_RECORDS_KEY);
+  let existing = parseArray(raw).map((record) => normalizeStoredStaff1Record(record, staffList));
+
+  // 首次部署时尽量从现有日志补齐当前/上月数据。
+  if (!raw) {
+    const oldLogs = parseArray(await env.SCHEDULE_KV.get('key_logs'));
+    existing = oldLogs
+      .filter((record) => normalizeIdentity(record.keyName) === normalizeIdentity('报3101'))
+      .map((record) => normalizeStoredStaff1Record(record, staffList));
+  }
+
+  const byId = new Map(existing.filter((record) => record.id).map((record) => [String(record.id), record]));
+  for (const record of newLogs || []) {
+    if (normalizeIdentity(record.keyName) !== normalizeIdentity('报3101')) continue;
+    byId.set(String(record.id), normalizeStoredStaff1Record(record, staffList));
+  }
+
+  const currentMonth = cnDateKey().slice(0, 7);
+  const retainFrom = `${previousMonthKey(currentMonth)}-01`;
+  const retained = Array.from(byId.values())
+    .filter((record) => String(record.time || '').slice(0, 10) >= retainFrom)
+    .sort((a, b) => String(a.time || '').localeCompare(String(b.time || '')));
+  const nextRaw = JSON.stringify(retained);
+  if (nextRaw !== raw) await env.SCHEDULE_KV.put(STAFF1_3101_RECORDS_KEY, nextRaw);
+}
+
+function classifyAction(record) {
+  const action = String(record.rawAction || record.action || '');
+  if (action === 'borrow' || action.includes('取出')) return 'borrow';
+  if ((action === 'return' || action.includes('归还')) && !action.includes('错误')) return 'return';
+  return null;
+}
+
+function pairStaff1Records(records) {
+  const sorted = [...records].sort((a, b) => String(a.time).localeCompare(String(b.time)));
+  const byDay = {};
+  for (const record of sorted) {
+    const date = String(record.time || '').slice(0, 10);
+    if (!date) continue;
+    if (!byDay[date]) byDay[date] = [];
+    byDay[date].push(record);
+  }
+
+  const pairs = [];
+  for (const [date, dayRecords] of Object.entries(byDay)) {
+    const userStacks = {};
+    const leftovers = [];
+    for (const record of dayRecords) {
+      const action = classifyAction(record);
+      if (!action) continue;
+      const identity = record.staff1PersonKey || `name:${normalizeIdentity(record.userName)}`;
+      const userKey = `${normalizeIdentity(record.keyName)}_${identity}`;
+      if (!userStacks[userKey]) userStacks[userKey] = [];
+      if (action === 'borrow') {
+        userStacks[userKey].push(record);
+      } else if (userStacks[userKey].length > 0) {
+        const borrow = userStacks[userKey].shift();
+        pairs.push({
+          keyName: record.keyName,
+          borrowTime: borrow.time,
+          returnTime: record.time,
+          duration: Math.max(0, Math.round((new Date(record.time) - new Date(borrow.time)) / 60000)),
+          borrower: borrow.userName,
+          staff1PersonKey: borrow.staff1PersonKey || null,
+          staff1DisplayName: borrow.staff1DisplayName || '',
+          date,
+        });
+      } else {
+        leftovers.push(record);
+      }
+    }
+
+    // 无法按人员配对时，按同一天同一把钥匙进行FIFO兜底。
+    const keyStacks = {};
+    for (const record of leftovers) {
+      const action = classifyAction(record);
+      const key = normalizeIdentity(record.keyName);
+      if (!keyStacks[key]) keyStacks[key] = [];
+      if (action === 'borrow') {
+        keyStacks[key].push(record);
+      } else if (action === 'return' && keyStacks[key].length > 0) {
+        const borrow = keyStacks[key].shift();
+        pairs.push({
+          keyName: record.keyName,
+          borrowTime: borrow.time,
+          returnTime: record.time,
+          duration: Math.max(0, Math.round((new Date(record.time) - new Date(borrow.time)) / 60000)),
+          borrower: borrow.userName,
+          staff1PersonKey: borrow.staff1PersonKey || null,
+          staff1DisplayName: borrow.staff1DisplayName || '',
+          date,
+        });
+      }
+    }
+  }
+  return pairs;
+}
+
+function aggregateStaff1Month(sessions, monthKey) {
+  const totals = new Map();
+  for (const session of sessions) {
+    if (!session.staff1PersonKey || String(session.borrowTime || '').slice(0, 7) !== monthKey) continue;
+    const key = session.staff1PersonKey;
+    const current = totals.get(key) || {
+      personKey: key,
+      displayName: session.staff1DisplayName || session.borrower || '未命名人员',
+      useCount: 0,
+      totalMinutes: 0,
+      lastUsedAt: '',
+    };
+    current.useCount += 1;
+    current.totalMinutes += session.duration;
+    if (!current.lastUsedAt || session.borrowTime > current.lastUsedAt) current.lastUsedAt = session.borrowTime;
+    totals.set(key, current);
+  }
+  return Array.from(totals.values()).sort((a, b) => b.totalMinutes - a.totalMinutes || a.displayName.localeCompare(b.displayName));
+}
+
+async function settleStaff1Stats(env) {
+  const today = cnDateKey();
+  const currentMonth = today.slice(0, 7);
+  const previousMonth = previousMonthKey(currentMonth);
+  const rawRecords = await kvGet(env, STAFF1_3101_RECORDS_KEY, []);
+  const sessions = pairStaff1Records((Array.isArray(rawRecords) ? rawRecords : []).filter((record) => normalizeIdentity(record.keyName) === normalizeIdentity('报3101')));
+  const stored = await kvGet(env, STAFF1_STATS_KEY, null);
+  const stats = stored || {
+    currentMonth: { month: currentMonth, people: [] },
+    previousMonth: { month: previousMonth, people: [] },
+    lastSettledWeek: null,
+    updatedAt: null,
+  };
+  let changed = !stored;
+
+  if (!stats.currentMonth || stats.currentMonth.month !== currentMonth) {
+    stats.previousMonth = {
+      month: previousMonth,
+      people: aggregateStaff1Month(sessions, previousMonth),
+    };
+    stats.currentMonth = { month: currentMonth, people: [] };
+    stats.lastSettledWeek = null;
+    stats.updatedAt = new Date().toISOString();
+    changed = true;
+  }
+
+  const targetWeek = previousWeekStartKey(today);
+  if (stats.lastSettledWeek !== targetWeek) {
+    stats.currentMonth = {
+      month: currentMonth,
+      people: aggregateStaff1Month(sessions, currentMonth),
+    };
+    stats.lastSettledWeek = targetWeek;
+    stats.updatedAt = new Date().toISOString();
+    changed = true;
+  }
+
+  if (changed) await kvPut(env, STAFF1_STATS_KEY, stats);
+  return stats;
 }
 
 // ====== 邮件发送（Resend） ======
@@ -517,7 +786,8 @@ export default {
         weekly3101.push({ date: d, pairs: dayPairs, totalDuration: dayPairs.reduce((s, p) => s + p.duration, 0) });
       }
 
-      return Response.json({ ganttKeys, weekly3101, keyDurations });
+      const staff1_3101 = await kvGet(env, STAFF1_STATS_KEY, null);
+      return Response.json({ ganttKeys, weekly3101, keyDurations, staff1_3101 });
     }
 
     // 手动触发抓取
@@ -536,5 +806,6 @@ export default {
   async scheduled(event, env) {
     console.log('[定时] 刷新钥匙数据...');
     await fetchKeysFromRemote(env);
+    await settleStaff1Stats(env);
   },
 };

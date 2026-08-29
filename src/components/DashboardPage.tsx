@@ -5,18 +5,30 @@ interface Session { borrowTime: string; returnTime: string; duration: number; bo
 interface GanttKey { keyName: string; sessions: Session[]; }
 interface WeeklyDay { date: string; pairs: Session[]; totalDuration: number; }
 interface KeyDur { keyName: string; totalDuration: number; }
-interface Stats { ganttKeys: GanttKey[]; weekly3101: WeeklyDay[]; keyDurations: KeyDur[]; }
+interface StaffDuration { personKey: string; displayName: string; useCount: number; totalMinutes: number; lastUsedAt: string; }
+interface StaffMonthDuration { month: string; people: StaffDuration[]; }
+interface Staff3101Stats { currentMonth: StaffMonthDuration | null; previousMonth: StaffMonthDuration | null; lastSettledWeek: string | null; updatedAt: string | null; }
+interface Stats { ganttKeys: GanttKey[]; weekly3101: WeeklyDay[]; keyDurations: KeyDur[]; staff1_3101?: Staff3101Stats | null; }
 
 function fmtDur(m: number): string { return m < 60 ? `${m}min` : `${Math.floor(m/60)}h${m%60}min`; }
+function fmtMonth(month: string): string {
+  const [year, value] = month.split('-');
+  return `${year}年${Number(value)}月`;
+}
 const BAR_COLORS = ['#2563eb','#3b82f6','#60a5fa','#93c5fd','#bfdbfe','#2563eb','#3b82f6','#60a5fa','#93c5fd','#bfdbfe','#2563eb','#3b82f6','#60a5fa','#93c5fd','#bfdbfe'];
 const WEEKDAYS = ['周日','周一','周二','周三','周四','周五','周六'];
 
 export default function DashboardPage() {
   const [stats, setStats] = useState<Stats | null>(null);
+  const [staffPeriod, setStaffPeriod] = useState<'current' | 'previous'>('current');
   useEffect(() => { const load = async () => { try { const r = await fetch('/api/stats'); if (r.ok) setStats(await r.json()); } catch {} }; load(); const t = setInterval(load, 60000); return () => clearInterval(t); }, []);
   if (!stats) return <div className="text-gray-300 text-center py-20">加载中...</div>;
 
   const { ganttKeys, weekly3101, keyDurations } = stats;
+  const staffStats = stats.staff1_3101;
+  const staffMonth = staffStats?.[staffPeriod === 'current' ? 'currentMonth' : 'previousMonth'];
+  const staffPeople = staffMonth?.people || [];
+  const staffTotalMinutes = staffPeople.reduce((sum, person) => sum + person.totalMinutes, 0);
   const totalTodayMin = ganttKeys.reduce((s, k) => s + k.sessions.reduce((ss, ss2) => ss + ss2.duration, 0), 0);
   const g3101 = ganttKeys.find((k) => k.keyName === '报3101');
   const s3101 = g3101?.sessions || [];
@@ -87,6 +99,59 @@ export default function DashboardPage() {
               </tbody>
             </table>
           </div>
+        )}
+      </div>
+
+      <div className="bg-white rounded-2xl p-5 shadow-sm border border-gray-100 mt-6">
+        <div className="flex flex-wrap items-start justify-between gap-3 mb-4">
+          <div>
+            <h3 className="text-sm font-bold text-gray-700">👥 报3101 人员1使用时长</h3>
+            <p className="text-xs text-gray-400 mt-1">
+              {staffMonth ? `${fmtMonth(staffMonth.month)} · ${staffPeople.length}人 · 累计 ${fmtDur(staffTotalMinutes)}` : '周结算后显示统计结果'}
+            </p>
+          </div>
+          <div className="flex rounded-xl bg-gray-100 p-1 text-xs font-semibold">
+            <button
+              onClick={() => setStaffPeriod('current')}
+              className={`px-3 py-1.5 rounded-lg transition-colors ${staffPeriod === 'current' ? 'bg-white text-blue-600 shadow-sm' : 'text-gray-400 hover:text-gray-600'}`}
+            >
+              本月
+            </button>
+            <button
+              onClick={() => setStaffPeriod('previous')}
+              className={`px-3 py-1.5 rounded-lg transition-colors ${staffPeriod === 'previous' ? 'bg-white text-blue-600 shadow-sm' : 'text-gray-400 hover:text-gray-600'}`}
+            >
+              上月
+            </button>
+          </div>
+        </div>
+
+        {!staffMonth || staffPeople.length === 0 ? (
+          <div className="text-gray-300 text-center py-8 text-sm">暂无已结算的人员使用记录</div>
+        ) : (
+          <div className="overflow-x-auto">
+            <table className="w-full text-sm border-separate border-spacing-0">
+              <thead><tr>
+                <th className="text-left text-[11px] text-gray-400 font-semibold pb-2 border-b border-gray-100">人员</th>
+                <th className="text-right text-[11px] text-gray-400 font-semibold pb-2 border-b border-gray-100">使用次数</th>
+                <th className="text-right text-[11px] text-gray-400 font-semibold pb-2 border-b border-gray-100">累计时长</th>
+                <th className="text-right text-[11px] text-gray-400 font-semibold pb-2 border-b border-gray-100">最后使用</th>
+              </tr></thead>
+              <tbody>
+                {staffPeople.map((person) => (
+                  <tr key={person.personKey} className="hover:bg-gray-50">
+                    <td className="py-2.5 font-medium border-b border-gray-50">{person.displayName}</td>
+                    <td className="py-2.5 text-right text-gray-500 border-b border-gray-50">{person.useCount}次</td>
+                    <td className="py-2.5 text-right font-semibold text-blue-600 border-b border-gray-50">{fmtDur(person.totalMinutes)}</td>
+                    <td className="py-2.5 text-right text-xs text-gray-400 font-mono border-b border-gray-50">{person.lastUsedAt || '—'}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        )}
+        {staffStats?.lastSettledWeek && (
+          <div className="text-[11px] text-gray-300 mt-3">最近结算周：{staffStats.lastSettledWeek} · 数据更新时间：{staffStats.updatedAt ? new Date(staffStats.updatedAt).toLocaleString('zh-CN') : '—'}</div>
         )}
       </div>
     </>
