@@ -471,9 +471,20 @@ async function sendEventEmails(env, hallData, staffList, location) {
         if (sent.has(staff.email + evt.id)) continue;
         sent.add(staff.email + evt.id);
         console.log('[邮件调试] 发送:', date, evt.timeSlot, '->', staff.email);
+        const applicant = [evt.applicantName, evt.counterpartPhone].filter(Boolean).join(' ');
+        const mailBody = [
+          `活动名称：${evt.eventName}`,
+          `时间：${date} ${evt.timeSlot}`,
+          `地点：${location}`,
+          `主办单位：${evt.organizer || '无'}`,
+          `申请人：${applicant || '未填写'}`,
+          `负责人：${evt.contactPerson} ${evt.contactPhone || ''}`,
+          '',
+          '此邮件由系统自动发送，请勿回复。',
+        ].join('\n');
         await sendEmail(env, staff.email,
           `【${location}】活动安排通知 - ${evt.eventName}`,
-          `活动名称：${evt.eventName}\n时间：${date} ${evt.timeSlot}\n地点：${location}\n负责人：${evt.contactPerson} ${evt.contactPhone || ''}\n主办单位：${evt.organizer || '无'}\n\n此邮件由系统自动发送，请勿回复。`
+          mailBody
         );
         await new Promise((r) => setTimeout(r, 600));
       }

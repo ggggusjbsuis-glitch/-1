@@ -98,7 +98,10 @@ export interface HallEvent {
   organizer: string;
   contactPerson: string;
   contactPhone: string;
+  /** 申请人电话（对方联系人电话）——沿用旧字段名，勿改，线上存量数据在用 */
   counterpartPhone?: string;
+  /** 申请人姓名（对方），与 counterpartPhone 成对；旧数据可能为空 */
+  applicantName?: string;
   status: 'occupied' | 'free';
 }
 

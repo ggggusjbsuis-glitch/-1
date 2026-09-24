@@ -228,7 +228,7 @@ export default function HallPage({ eventsByDate, editing, onSave, staffList }: P
                 ) : (
                   <>
                     <div className="font-semibold text-[15px] text-gray-900">{e.eventName}</div>
-                    <div className="text-[13px] text-gray-400 mt-1.5 flex flex-wrap gap-x-4 gap-y-1"><span>🏛 {e.organizer}</span><span>👤 {e.contactPerson}</span><span>📞 {e.contactPhone}</span>{e.counterpartPhone && <span>📱 对方 {e.counterpartPhone}</span>}</div>
+                    <div className="text-[13px] text-gray-400 mt-1.5 flex flex-wrap gap-x-4 gap-y-1"><span>🏛 {e.organizer}</span><span>👤 负责人 {e.contactPerson}</span><span>📞 {e.contactPhone}</span>{(e.applicantName || e.counterpartPhone) && <span className="text-blue-600">🙋 申请人 {[e.applicantName, e.counterpartPhone].filter(Boolean).join(' ')}</span>}</div>
                   </>
                 )}
               </div>
@@ -273,8 +273,11 @@ export default function HallPage({ eventsByDate, editing, onSave, staffList }: P
                         </div>
                         <div className="text-[13px] text-gray-400 flex flex-col gap-1">
                           <span>🏛 {e.organizer}</span>
-                          <span>👤 {e.contactPerson}</span>
+                          <span>👤 负责人 {e.contactPerson}</span>
                           <span>📞 {e.contactPhone}</span>
+                          {(e.applicantName || e.counterpartPhone) && (
+                            <span className="text-blue-600">🙋 申请人 {[e.applicantName, e.counterpartPhone].filter(Boolean).join(' ')}</span>
+                          )}
                         </div>
                       </>
                     )}
@@ -322,6 +325,7 @@ function EditEventModal({
   const [organizer, setOrganizer] = useState(event?.organizer || '');
   const [contactPerson, setContactPerson] = useState(event?.contactPerson || '');
   const [contactPhone, setContactPhone] = useState(event?.contactPhone || '');
+  const [applicantName, setApplicantName] = useState(event?.applicantName || '');
   const [counterpartPhone, setCounterpartPhone] = useState(event?.counterpartPhone || '');
 
   const selectStaff = (name: string) => {
@@ -331,12 +335,12 @@ function EditEventModal({
 
   const save = () => {
     if (!eventName.trim()) return;
-    onSave({ id: event?.id || genId(), date, timeSlot, eventName: eventName.trim(), organizer: organizer.trim(), contactPerson: contactPerson.trim(), contactPhone: contactPhone.trim(), counterpartPhone: counterpartPhone.trim(), status: 'occupied' });
+    onSave({ id: event?.id || genId(), date, timeSlot, eventName: eventName.trim(), organizer: organizer.trim(), contactPerson: contactPerson.trim(), contactPhone: contactPhone.trim(), applicantName: applicantName.trim(), counterpartPhone: counterpartPhone.trim(), status: 'occupied' });
     onClose();
   };
 
   const clearToFree = () => {
-    if (event) onSave({ ...event, eventName: '', organizer: '', contactPerson: '', contactPhone: '', counterpartPhone: '', status: 'free' });
+    if (event) onSave({ ...event, eventName: '', organizer: '', contactPerson: '', contactPhone: '', applicantName: '', counterpartPhone: '', status: 'free' });
     onClose();
   };
 
@@ -374,9 +378,15 @@ function EditEventModal({
             <label className="block text-xs text-gray-400 mb-1 font-medium">联系电话</label>
             <input value={contactPhone} onChange={(e) => setContactPhone(e.target.value)} placeholder="13800001111" className="w-full border-[1.5px] border-gray-200 rounded-xl px-3 py-2.5 text-sm outline-none focus:border-blue-500 transition-all" />
           </div>
-          <div className="border-t border-dashed border-gray-100 pt-4">
-            <label className="block text-xs text-gray-400 mb-1 font-medium">📞 对方方联系人电话</label>
-            <input value={counterpartPhone} onChange={(e) => setCounterpartPhone(e.target.value)} placeholder="填写对方方活动对接人的电话" className="w-full border-[1.5px] border-gray-200 rounded-xl px-3 py-2.5 text-sm outline-none focus:border-blue-500 transition-all" />
+          <div className="border-t border-dashed border-gray-100 pt-4 space-y-3">
+            <div>
+              <label className="block text-xs text-gray-400 mb-1 font-medium">🙋 申请人姓名</label>
+              <input value={applicantName} onChange={(e) => setApplicantName(e.target.value)} placeholder="填写对方申请人的姓名" className="w-full border-[1.5px] border-gray-200 rounded-xl px-3 py-2.5 text-sm outline-none focus:border-blue-500 transition-all" />
+            </div>
+            <div>
+              <label className="block text-xs text-gray-400 mb-1 font-medium">📞 申请人电话</label>
+              <input value={counterpartPhone} onChange={(e) => setCounterpartPhone(e.target.value)} placeholder="填写对方申请人的电话" className="w-full border-[1.5px] border-gray-200 rounded-xl px-3 py-2.5 text-sm outline-none focus:border-blue-500 transition-all" />
+            </div>
           </div>
         </div>
         <div className="p-5 border-t border-gray-100 flex justify-between sticky bottom-0 bg-white">
