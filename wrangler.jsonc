@@ -1,6 +1,6 @@
 {
   "$schema": "node_modules/wrangler/config-schema.json",
-  "name": "2",
+  "name": "1",
   "main": "worker.js",
   "compatibility_date": "2026-06-04",
   "observability": {
@@ -16,7 +16,7 @@
   "kv_namespaces": [
     {
       "binding": "SCHEDULE_KV",
-      "id": "1b627cdbdf8346c9855398ebfaf56caa"
+      "id": "d1e23fee9a27438b95a9305b47444e81"
     }
   ],
   "vars": {
